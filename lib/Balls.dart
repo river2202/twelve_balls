@@ -1,5 +1,4 @@
 import 'package:twelve_balls/Ball.dart';
-import 'dart:math';
 
 class Balls {
   List<Ball> balls;
@@ -17,91 +16,13 @@ class Balls {
   }
 
   List<int> stateGroup() {
+    return stateBallGroup().map((group) => group.length).toList();
+  }
+
+  List<List<Ball>> stateBallGroup() {
     return State.values.map((state) {
-      return balls.where((ball) => ball.state == state).length;
+      return balls.where((ball) => ball.state == state);
     }).toList();
-  }
-
-  int _stepLeftExhaustion() {
-    // using exhaustion to search for steps
-    // not supported by this version
-    return null;
-  }
-
-  int _stepLeftForUnknown(int unknown, int good) {
-
-    if(unknown==1 && good==0) {
-      return null;
-    }
-
-    if(unknown==2 && good==0) {
-      return null;
-    }
-
-    var step = 1;
-    var maxBalls = good > 0 ? 1 : 0;
-
-    while(maxBalls < unknown) {
-      maxBalls = good > 0 ? maxBalls*3+1 : (maxBalls+1)*3;
-      step++;
-    }
-
-    if(good > 0 && maxBalls+1 <= unknown) {
-      return step;
-    } else {
-      return step;
-    }
-  }
-
-  int _stepLeftForDirectionInfo(int possiblyLighter, int possiblyHeavier, int good) {
-
-    int directionInfo = (possiblyLighter+possiblyHeavier);
-
-    if(directionInfo == 1) {
-      return 0;
-    }
-
-    if(possiblyLighter == 1 && possiblyHeavier == 1 && good < 1) {
-      return null;
-    }
-
-    return (log(directionInfo)/log(3)).ceil();
-  }
-
-  int stepsLeft() {
-    var groups = stateGroup();
-    if(groups.length < State.values.length) {
-      return null;
-    }
-
-    int unknown = groups[State.unknown.index];
-    int possiblyLighter = groups[State.possiblyLighter.index];
-    int possiblyHeavier = groups[State.possiblyHeavier.index];
-    int good = groups[State.good.index];
-
-    int directionInfo = (possiblyLighter+possiblyHeavier);
-
-    if(unknown > 0 && directionInfo > 0) {
-      return _stepLeftExhaustion();
-    }
-
-    if(directionInfo > 0) {
-      return _stepLeftForDirectionInfo(possiblyLighter, possiblyHeavier, good);
-    }
-
-    if(unknown > 0) {
-      return _stepLeftForUnknown(unknown, good);
-    }
-
-    return null;
-  }
-
-  Ball result() {
-    return null;
-  }
-
-  List<int> getWeightingStrategy() {
-    return [0,1,2,4,5,6,7,8];
   }
 
   applyWeighting(List<int> leftGroup, List<int> rightGroup, {State leftGroupState}) {
@@ -140,3 +61,4 @@ class Balls {
     }
   }
 }
+

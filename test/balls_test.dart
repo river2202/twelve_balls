@@ -1,7 +1,10 @@
 import 'package:test/test.dart';
 import 'package:twelve_balls/Ball.dart';
 import 'package:twelve_balls/Balls.dart';
+import 'package:twelve_balls/Quiz.dart';
 import 'package:collection/collection.dart';
+
+Function eq = const ListEquality().equals;
 
 void main() {
 
@@ -82,13 +85,13 @@ void main() {
     });
   });
 
-  group('Quiz tests', () {
-    test("init quiz with number", () {
-      var quiz = Balls(12);
+  group('Balls tests', () {
+    test("init with number of balls", () {
+      var quiz = Quiz(12);
       expect(quiz.description(), "????????????");
     });
 
-    test("init quiz from symbols", () {
+    test("init balls from symbols", () {
       var initSymbols = [
         "?↑↓???????????-",
         "--↑↑↑↑↓↓↓↓????-",
@@ -102,6 +105,7 @@ void main() {
         expect(quiz.description(), symbols);
       });
     });
+
 
     test("applyWeighting", () {
 
@@ -156,7 +160,7 @@ void main() {
       data.forEach((data) {
         var quiz = Balls.from(symbols: data[0]);
 
-        if (!DeepCollectionEquality().equals(quiz.stateGroup(), data[1])) {
+        if (!eq(quiz.stateGroup(), data[1])) {
           print("quiz: ${quiz.description()}, stateGroup should be: ${data[1]}, got: ${quiz.stateGroup()}");
           expect(quiz.stateGroup(), data[1]);
         }
@@ -164,37 +168,34 @@ void main() {
 
     });
 
-    test("Step left for quiz", () {
+  });
+
+
+  group('Quiz tests', () {
+
+    test("result", () {
       var data = [
-        ["", null],
-
-        ["?", null],
-        ["?-", 1],
-        ["↓↓↓", 1],
-
-        ["???", 2],
-        ["????-", 2],
-        ["↓↓↓↓↓↓↓↓↓", 2],
-
-        ["????????????", 3],
-        ["?????????????-", 3],
-
-        ["??", null],
-        ["??-", 2],
-        ["↑↑", 1],
-        ["↓↓", 1],
-        ["↓↑", null],
-        ["↓↑-", 1],
-        ["????", 3],
-        ["↓↓↑↑", 2],
+        ["????????????", null],
+        ["?????????????-", null],
+        ["?????????????-", null],
+        ["----↑---↑-", null],
+        ["--------↑-", [8, "↑"]],
+        ["--↓-------", [2, "↓"]],
+        ["?-↑-------", null],
+        ["-↑-------?", null],
+        ["-↑--↓----?", null],
+        ["--↑-------", [2, "↑"]],
       ];
 
       data.forEach((data) {
-        var quiz = Balls.from(symbols: data[0]);
+        var quiz = Quiz.from(symbols: data[0]);
+        var resultBall = quiz.result();
 
-        if (quiz.stepsLeft() != data[1]) {
-          print("quiz: ${quiz.description()}, steps should be: ${data[1]}, got: ${quiz.stepsLeft()}");
-          expect(quiz.stepsLeft(), data[1]);
+        var resultArray = resultBall == null ? null : [resultBall.index, resultBall.symbol()];
+
+        if (!eq(resultArray, data[1])) {
+          print("quiz: ${quiz.description()}, result should be: ${data[1]}, got: $resultArray");
+          expect(resultArray, data[1]);
         }
       });
 
