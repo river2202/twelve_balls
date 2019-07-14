@@ -1,16 +1,12 @@
-# twelve_balls
+# Twelve Balls Challenge
 
-A new Flutter project.
+12 balls challenge app build using Flutter.
 
-## Getting Started
+## The challenge
 
-This project is a starting point for a Flutter application.
+There are 12 identical looking balls. One of them has different weight. You have a scale but can only weight balls 3 times to locate the different one. And you need to tell it is heavier or lighter.
 
-A few resources to get you started if this is your first Flutter project:
+## Solution
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Google “12 balls” and feel lucky. Or use following link:
+https://puzzling.stackexchange.com/questions/183/twelve-balls-and-a-scale
