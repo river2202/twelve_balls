@@ -53,6 +53,9 @@ void main() {
       var bestWeightingStrategy = quiz.getBestWeightingStrategy();
       const weightingResults = [State.possiblyLighter, State.possiblyHeavier, State.good];
 
+      print("Quiz: ${quiz.description()}");
+      print("best: $bestWeightingStrategy");
+
       if((bestWeightingStrategy?.length ?? 0) < 2) {
         print("Quiz:${quiz.description()}, weighting: $bestWeightingStrategy");
         fail("Not validate bestWeightingStrategy");
@@ -60,6 +63,7 @@ void main() {
 
       for(State weightingResult in weightingResults) {
         var testQuiz = quiz.testApplyingWeighting(bestWeightingStrategy[0], bestWeightingStrategy[1], leftGroupState: weightingResult);
+        print("apply left: $weightingResult");
         var testMinimumStep = testQuiz.getMinimumStep();
         if(testMinimumStep < minimumStep) {
           if (testQuiz.result() == null || testMinimumStep > 0) {

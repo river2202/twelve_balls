@@ -21,7 +21,7 @@ class Balls {
 
   List<List<Ball>> stateBallGroup() {
     return State.values.map((state) {
-      return balls.where((ball) => ball.state == state);
+      return balls.where((ball) => ball.state == state).toList();
     }).toList();
   }
 

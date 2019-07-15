@@ -95,28 +95,36 @@ mixin WeightingStrategy on StepStrategy {
 
     int leftGroupNum = (unknown+1) ~/ 3;
     int remainder = unknown.remainder(3);
+    List<Ball> candidateBalls = unknownBalls.map((ball) => ball).toList();
 
     if(good > 0 && remainder == 1) {
       leftGroupNum ++;
+      candidateBalls.add(goodBalls.first);
     }
 
-    var leftGroup = unknownBalls.sublist(0, leftGroupNum);
-    var rightGroup = unknownBalls.sublist(leftGroupNum, leftGroupNum + leftGroupNum);
+    var leftGroup = candidateBalls.sublist(0, leftGroupNum).map((ball) => ball.index).toList();
+    var rightGroup = candidateBalls.sublist(leftGroupNum, leftGroupNum + leftGroupNum).map((ball) => ball.index).toList();
 
-    return null;
+    return [leftGroup, rightGroup];
   }
 
-  List<List<int>> _getBestWeightingStrategyForDirectionInfo(List<Ball> possiblyLighter, List<Ball> possiblyHeavier, List<Ball> good) {
-//
-//    int directionInfo = (possiblyLighter+possiblyHeavier);
-//
-//    if(directionInfo == 1) {
-//      return null;
-//    }
-//
-//    if(possiblyLighter == 1 && possiblyHeavier == 1 && good < 1) {
-//      return null;
-//    }
+  List<List<int>> _getBestWeightingStrategyForDirectionInfo(List<Ball> possiblyLighterBalls, List<Ball> possiblyHeavierBalls, List<Ball> goodBalls) {
+
+    int possiblyLighter = possiblyLighterBalls.length;
+    int possiblyHeavier = possiblyHeavierBalls.length;
+
+    int directionInfo = (possiblyLighter+possiblyHeavier);
+
+    if(directionInfo == 1) {
+      return null;
+    }
+
+    if(possiblyLighter == 1 && possiblyHeavier == 1 && good < 1) {
+      return null;
+    }
+
+
+
 
     return null;// (log(directionInfo)/log(3)).ceil();
   }
