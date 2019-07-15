@@ -11,11 +11,11 @@ mixin StepStrategy on Balls {
 
   int _stepLeftForUnknown(int unknown, int good) {
 
-    if(unknown==1 && good==0) {
+    if(unknown==1 && good<=0) {
       return null;
     }
 
-    if(unknown==2 && good==0) {
+    if(unknown==2 && good<=0) {
       return null;
     }
 
@@ -42,7 +42,7 @@ mixin StepStrategy on Balls {
       return 0;
     }
 
-    if(possiblyLighter == 1 && possiblyHeavier == 1 && good < 1) {
+    if(possiblyLighter == 1 && possiblyHeavier == 1 && good <= 0) {
       return null;
     }
 
@@ -95,11 +95,11 @@ mixin WeightingStrategy on StepStrategy {
 
     int leftGroupNum = (unknown+1) ~/ 3;
     int remainder = unknown.remainder(3);
-    List<Ball> candidateBalls = unknownBalls.map((ball) => ball).toList();
+    List<Ball> candidateBalls = List<Ball>.from(unknownBalls);//unknownBalls.map((ball) => ball).toList();
 
     if(good > 0 && remainder == 1) {
       leftGroupNum ++;
-      candidateBalls.add(goodBalls.first);
+      candidateBalls.insert(0,goodBalls.first);
     }
 
     var leftGroup = candidateBalls.sublist(0, leftGroupNum).map((ball) => ball.index).toList();
@@ -108,10 +108,35 @@ mixin WeightingStrategy on StepStrategy {
     return [leftGroup, rightGroup];
   }
 
+  Iterable<T> _merge2by2<T>(Iterable<T> c1, Iterable<T> c2) sync* {
+    var it1 = c1.iterator;
+    var it2 = c2.iterator;
+    var active = true;
+    while (active) {
+      active = false;
+
+      for (var i in [1,2]) {
+        if (it1.moveNext()) {
+          active = true;
+          yield it1.current;
+        }
+      }
+
+      for (var i in [1,2]) {
+        if (it2.moveNext()) {
+          active = true;
+          yield it2.current;
+        }
+      }
+    }
+  }
+
+
   List<List<int>> _getBestWeightingStrategyForDirectionInfo(List<Ball> possiblyLighterBalls, List<Ball> possiblyHeavierBalls, List<Ball> goodBalls) {
 
     int possiblyLighter = possiblyLighterBalls.length;
     int possiblyHeavier = possiblyHeavierBalls.length;
+    int good = goodBalls.length;
 
     int directionInfo = (possiblyLighter+possiblyHeavier);
 
@@ -119,14 +144,30 @@ mixin WeightingStrategy on StepStrategy {
       return null;
     }
 
-    if(possiblyLighter == 1 && possiblyHeavier == 1 && good < 1) {
+    if(possiblyLighter == 1 && possiblyHeavier == 1 && good == 0) {
       return null;
     }
 
+    if(possiblyLighter == 1 && possiblyHeavier == 1 && good > 0) {
+      return [[possiblyLighterBalls[0].index], [goodBalls[0].index]];
+    }
 
+    List<Ball> candidateBalls = _merge2by2(
+        possiblyLighter > possiblyHeavier ? possiblyLighterBalls : possiblyHeavierBalls,
+        possiblyLighter > possiblyHeavier ? possiblyHeavierBalls : possiblyLighterBalls
+    ).toList();
 
+    int leftGroupNum = (directionInfo+1) ~/ 3;
 
-    return null;// (log(directionInfo)/log(3)).ceil();
+    var leftGroup = List<int>(); //candidateBalls.where((ball) => ).sublist(0, leftGroupNum).map((ball) => ball.index).toList();
+    var rightGroup = List<int>(); //candidateBalls.sublist(leftGroupNum, leftGroupNum + leftGroupNum).map((ball) => ball.index).toList();
+
+    for(int i=0; i < leftGroupNum; i++) {
+      leftGroup.add(candidateBalls[2*i].index);
+      rightGroup.add(candidateBalls[2*i+1].index);
+    }
+
+    return [leftGroup, rightGroup];
   }
 
   List<List<int>> getBestWeightingStrategy() {

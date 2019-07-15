@@ -36,6 +36,7 @@ void main() {
 
         ["--------↑-", 0],
         ["--↓-------", 0],
+        ["----------", null],
       ];
 
       data.forEach((data) {
@@ -49,11 +50,12 @@ void main() {
     });
 
     testQuizNextWeighting(Quiz quiz) {
-      var minimumStep = quiz.getMinimumStep();
-      var bestWeightingStrategy = quiz.getBestWeightingStrategy();
       const weightingResults = [State.possiblyLighter, State.possiblyHeavier, State.good];
 
+      var minimumStep = quiz.getMinimumStep();
       print("Quiz: ${quiz.description()}");
+
+      var bestWeightingStrategy = quiz.getBestWeightingStrategy();
       print("best: $bestWeightingStrategy");
 
       if((bestWeightingStrategy?.length ?? 0) < 2) {
@@ -65,20 +67,39 @@ void main() {
         var testQuiz = quiz.testApplyingWeighting(bestWeightingStrategy[0], bestWeightingStrategy[1], leftGroupState: weightingResult);
         print("apply left: $weightingResult");
         var testMinimumStep = testQuiz.getMinimumStep();
-        if(testMinimumStep < minimumStep) {
-          if (testQuiz.result() == null || testMinimumStep > 0) {
-            testQuizNextWeighting(testQuiz);
+
+        if (testMinimumStep != null) {
+          if(testMinimumStep < minimumStep) {
+            if (testQuiz.result() != null) {
+              print("OK, solved, result is ${testQuiz.description()}");
+            } else if(testMinimumStep > 0) {
+              testQuizNextWeighting(testQuiz);
+            } else {
+              print("Something went wrong!");
+            }
+          } else {
+            print("Failed: Quiz: ${testQuiz.description()}, weighting: $bestWeightingStrategy, result:$weightingResult");
+            expect(testMinimumStep, lessThan(minimumStep));
           }
         } else {
-          print("Quiz:${testQuiz.description()}, weighting: $bestWeightingStrategy, result:$weightingResult");
-          expect(testMinimumStep, lessThan(minimumStep));
+          print("OK, this path has no solution");
         }
       }
     }
 
     test("Best weighting strategy", () {
-      var quiz = Quiz(12);
-      testQuizNextWeighting(quiz);
+//      var quiz = Quiz(12);
+//      testQuizNextWeighting(quiz);
+
+      var data = [
+        Quiz(12),
+        Quiz(15),
+        Quiz(39),
+        Quiz(40),
+        Quiz.from(symbols: "----↑----↓-----"),
+      ];
+
+      data.forEach((quiz) => testQuizNextWeighting(quiz));
     });
   });
 }
