@@ -1,0 +1,28 @@
+name: Publish to balls-252804.firebaseapp.com
+
+on:
+  push:
+    branches:
+    - github_pages
+
+jobs:
+  deploy_github_pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      # - uses: subosito/flutter-action@v1
+      #   with:
+      #     flutter-version: '1.10.14'
+      #     channel: 'dev'
+      # - run: flutter config --enable-web && flutter build web
+      # - name: Deploy
+      #   uses: crazy-max/ghaction-github-pages@v1
+      #   with:
+      #     target_branch: master
+      #     build_dir: build/web
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    

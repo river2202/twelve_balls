@@ -1,30 +1,23 @@
 import 'package:test/test.dart';
-import 'package:twelve_balls/Ball.dart';
-import 'package:twelve_balls/Balls.dart';
-import 'package:twelve_balls/Strategy.dart';
-import 'package:twelve_balls/Quiz.dart';
+import 'package:twelve_balls/Model/Ball.dart';
+import 'package:twelve_balls/Model/Quiz.dart';
 import 'package:collection/collection.dart';
 
 Function eq = const ListEquality().equals;
 
 void main() {
-
   group('Strategy tests', () {
-
     test("minimum step", () {
       var data = [
         ["", null],
         ["?", null],
         ["?-", 1],
         ["↓↓↓", 1],
-
         ["???", 2],
         ["????-", 2],
         ["↓↓↓↓↓↓↓↓↓", 2],
-
         ["????????????", 3],
         ["?????????????-", 3],
-
         ["??", null],
         ["??-", 2],
         ["↑↑", 1],
@@ -33,7 +26,6 @@ void main() {
         ["↓↑-", 1],
         ["????", 3],
         ["↓↓↑↑", 2],
-
         ["--------↑-", 0],
         ["--↓-------", 0],
         ["----------", null],
@@ -43,14 +35,19 @@ void main() {
         var quiz = Quiz.from(symbols: data[0]);
 
         if (quiz.getMinimumStep() != data[1]) {
-          print("quiz: ${quiz.description()}, minimum step should be: ${data[1]}, got: ${quiz.getMinimumStep()}");
+          print(
+              "quiz: ${quiz.description()}, minimum step should be: ${data[1]}, got: ${quiz.getMinimumStep()}");
           expect(quiz.getMinimumStep(), data[1]);
         }
       });
     });
 
     testQuizNextWeighting(Quiz quiz) {
-      const weightingResults = [State.possiblyLighter, State.possiblyHeavier, State.good];
+      const weightingResults = [
+        BallState.possiblyLighter,
+        BallState.possiblyHeavier,
+        BallState.good
+      ];
 
       var minimumStep = quiz.getMinimumStep();
       print("Quiz: ${quiz.description()}");
@@ -58,27 +55,30 @@ void main() {
       var bestWeightingStrategy = quiz.getBestWeightingStrategy();
       print("best: $bestWeightingStrategy");
 
-      if((bestWeightingStrategy?.length ?? 0) < 2) {
+      if ((bestWeightingStrategy?.length ?? 0) < 2) {
         print("Quiz:${quiz.description()}, weighting: $bestWeightingStrategy");
         fail("Not validate bestWeightingStrategy");
       }
 
-      for(State weightingResult in weightingResults) {
-        var testQuiz = quiz.testApplyingWeighting(bestWeightingStrategy[0], bestWeightingStrategy[1], leftGroupState: weightingResult);
+      for (BallState weightingResult in weightingResults) {
+        var testQuiz = quiz.testApplyingWeighting(
+            bestWeightingStrategy[0], bestWeightingStrategy[1],
+            leftGroupState: weightingResult);
         print("apply left: $weightingResult");
         var testMinimumStep = testQuiz.getMinimumStep();
 
         if (testMinimumStep != null) {
-          if(testMinimumStep < minimumStep) {
-            if (testQuiz.result() != null) {
+          if (testMinimumStep < minimumStep) {
+            if (testQuiz.result != null) {
               print("OK, solved, result is ${testQuiz.description()}");
-            } else if(testMinimumStep > 0) {
+            } else if (testMinimumStep > 0) {
               testQuizNextWeighting(testQuiz);
             } else {
               print("Something went wrong!");
             }
           } else {
-            print("Failed: Quiz: ${testQuiz.description()}, weighting: $bestWeightingStrategy, result:$weightingResult");
+            print(
+                "Failed: Quiz: ${testQuiz.description()}, weighting: $bestWeightingStrategy, result:$weightingResult");
             expect(testMinimumStep, lessThan(minimumStep));
           }
         } else {
@@ -88,9 +88,6 @@ void main() {
     }
 
     test("Best weighting strategy", () {
-//      var quiz = Quiz(12);
-//      testQuizNextWeighting(quiz);
-
       var data = [
         Quiz(12),
         Quiz(15),
@@ -100,6 +97,28 @@ void main() {
       ];
 
       data.forEach((quiz) => testQuizNextWeighting(quiz));
+    });
+
+    test("test apply weighting", () {
+      var data = [
+        [
+          "????--------",
+          [0, 1],
+          [2, 3],
+          BallState.good,
+          "------------"
+        ],
+      ];
+
+      data.forEach((item) {
+        var quiz = Quiz.from(symbols: item[0]);
+        var testQuiz = quiz.testApplyingWeighting(item[1], item[2],
+            leftGroupState: item[3]);
+
+        print(
+            "quiz: ${quiz.description()}, weighting: ${item[1]}, ${item[2]}, ${item[3]}, got: ${testQuiz.description()}, expect: ${item[4]}");
+        expect(testQuiz.description(), item[4]);
+      });
     });
   });
 }
