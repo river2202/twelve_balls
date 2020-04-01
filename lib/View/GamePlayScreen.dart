@@ -34,6 +34,14 @@ class _GamePlayScreenState extends State<GamePlayScreen> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed code here!
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.navigation),
+        backgroundColor: Colors.green,
+      ),
     );
 
     return _scaffold;

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'View/GamePlayScreen.dart';
+import 'View/GameStartScreen.dart';
 import 'View/TwelveBallsQuiz.dart';
 
 void main() {
-  runApp(TwelveBallsQuizApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       ),
       home:
           // TwelveBallsQuizPage(title: '12 Balls Challenge'),
-          GamePlayScreen(),
+      GameStartScreen(),
     );
   }
 }

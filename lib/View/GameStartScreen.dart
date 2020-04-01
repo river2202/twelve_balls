@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twelve_balls/Model/Ball.dart';
-import 'package:twelve_balls/View/TwelveBallsQuiz.dart';
+import 'package:twelve_balls/View/GamePlayScreen.dart';
 import 'BallView.dart';
 import 'SizeConfig.dart';
 
@@ -16,7 +16,7 @@ class GameStartScreen extends StatefulWidget {
 _startGame(BuildContext context) {
   Navigator.push(
     context,
-    new MaterialPageRoute(builder: (context) => new TwelveBallsQuizPage()),
+    new MaterialPageRoute(builder: (context) => new GamePlayScreen()),
   );
 }
 
@@ -59,7 +59,7 @@ class _GameStartScreenState extends State<GameStartScreen> {
       child: RotationTransition(
         turns: new AlwaysStoppedAnimation(angle / 360),
         child: AnimatedContainer(
-          child: BallView(Ball(0), (ball, context) => _startGame(context)),
+          child: buildCircle(50),
           height: SizeConfig.blockSizeVertical * 25,
           width: SizeConfig.blockSizeVertical * 25,
           duration: Duration(milliseconds: 5000),
@@ -68,4 +68,13 @@ class _GameStartScreenState extends State<GameStartScreen> {
       ),
     );
   }
+
+  Widget buildCircle(double radius, {Color color = Colors.green}) {
+    return CircleAvatar(
+      backgroundColor: color,
+      radius: radius,
+    );
+  }
+
+
 }

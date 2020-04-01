@@ -243,9 +243,6 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage>
         .toList();
 
     var _scaffold = Scaffold(
-      appBar: AppBar(
-        title: Text('12 Balls'),
-      ),
       body: Builder(
         builder: (context) => new Column(
           children: <Widget>[
