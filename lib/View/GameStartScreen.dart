@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:twelve_balls/Model/Ball.dart';
+import 'package:provider/provider.dart';
+import 'package:twelve_balls/Game/World.dart';
 import 'package:twelve_balls/View/GamePlayScreen.dart';
-import 'BallView.dart';
+
 import 'SizeConfig.dart';
 
 class GameStartScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ _startGame(BuildContext context) {
 
 class _GameStartScreenState extends State<GameStartScreen> {
   String name;
+
   _GameStartScreenState() {
     name = "12 Balls";
   }
@@ -29,6 +31,10 @@ class _GameStartScreenState extends State<GameStartScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+
+    final game = Provider.of<World>(context);
+    game.init(MediaQuery.of(context).size);
+
     var _scaffold = Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -47,10 +53,7 @@ class _GameStartScreenState extends State<GameStartScreen> {
       ),
     );
 
-    return MaterialApp(
-      title: '12 Balls',
-      home: _scaffold,
-    );
+    return _scaffold;
   }
 
   Center buildMinion(double angle,
@@ -75,6 +78,4 @@ class _GameStartScreenState extends State<GameStartScreen> {
       radius: radius,
     );
   }
-
-
 }

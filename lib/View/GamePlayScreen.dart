@@ -1,5 +1,6 @@
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:twelve_balls/Game/World.dart';
 import 'package:twelve_balls/Model/Quiz.dart';
 
 import 'BallGroupView.dart';
@@ -22,14 +23,21 @@ class _GamePlayScreenState extends State<GamePlayScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final world = Provider.of<World>(context);
+    world.init(MediaQuery.of(context).size);
+
     var _scaffold = Scaffold(
       body: Builder(
         builder: (context) => SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Stack(
+//            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              buildBallsView(),
-              buildScale(),
+              buildBallsView(world),
+              buildScale(world.leftScale, Colors.green),
+              buildScale(world.rightScale, Colors.red),
+              buildScale(world.scale, Colors.orange),
+              buildScale(world.historyBar, Colors.black),
+//              buildHistoryBar(world),
             ],
           ),
         ),
@@ -48,34 +56,31 @@ class _GamePlayScreenState extends State<GamePlayScreen> {
   }
 
   bool isOpen = false;
-  Widget buildScale() {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          isOpen = !isOpen;
-        });
-      },
+  Widget buildScale(Rect rect, Color color) {
+    return Positioned.fromRect(
+      rect: rect,
       child: Container(
-        color: Colors.black12,
-        child: SizedBox.fromSize(
-          child: FlareActor('assets/Scale.flr',
-              animation: isOpen ? 'normal' : 'to normal'),
-          size: Size(400.0, 300.0),
-        ),
+        color: color,
       ),
     );
   }
 
-  Container buildBallsView() {
+  Widget buildBallsView(World game) {
     var activeQuiz = Quiz(12);
     var candidateBallViews = activeQuiz.balls
         .map((ball) =>
             BallView(ball, null, selected: false, key: Key("${ball.index}")))
         .toList();
 
-    var ballGroupView = Container(
-      height: 250,
-      child: BallGroupView(ballViews: candidateBallViews),
+    var ballGroupView = Positioned(
+      width: game.ballGroup.width,
+      height: game.ballGroup.height,
+      left: game.ballGroup.left,
+      top: game.ballGroup.top,
+      child: Container(
+        height: game.ballGroup.height,
+        child: BallGroupView(ballViews: candidateBallViews),
+      ),
     );
     return ballGroupView;
   }
