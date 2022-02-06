@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:twelve_balls/Model/Ball.dart';
 import 'package:twelve_balls/Model/WeightingStep.dart';
 import 'package:twelve_balls/View/BallGroupView.dart';
-import 'package:twelve_balls/Model/Ball.dart';
 import 'package:twelve_balls/View/BallView.dart';
 
 class TwelveBallsQuizPage extends StatefulWidget {
@@ -246,6 +246,9 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage>
       body: Builder(
         builder: (context) => new Column(
           children: <Widget>[
+            Container(
+              height: 68.0,
+            ),
             BallGroupView(
                 key: TwelveBallsQuizPage.candidateBallGroupViewKey,
                 ballViews: candidateBallViews),

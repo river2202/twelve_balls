@@ -9,7 +9,7 @@ void main() {
   runApp(Provider(
     create: (_) => new World(),
     lazy: false,
-    child: MyApp(),
+    child: TwelveBallsQuizApp(),
   ));
 }
 
