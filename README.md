@@ -10,3 +10,6 @@ There are 12 identical looking balls. One of them has different weight. You have
 
 Google “12 balls” and feel lucky. Or use following link:
 https://puzzling.stackexchange.com/questions/183/twelve-balls-and-a-scale
+
+## Try this
+https://balls-252804.web.app
