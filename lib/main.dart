@@ -35,6 +35,7 @@ class TwelveBallsQuizApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
       home: TwelveBallsQuizPage(title: '12 Balls Challenge'),
     );
   }

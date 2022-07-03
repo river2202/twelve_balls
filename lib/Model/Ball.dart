@@ -1,10 +1,4 @@
-
-enum BallState {
-  unknown,
-  possiblyLighter,
-  possiblyHeavier,
-  good
-}
+enum BallState { unknown, possiblyLighter, possiblyHeavier, good }
 
 class Ball {
   int index;
@@ -20,11 +14,15 @@ class Ball {
   bool isGood() => _state == BallState.good;
 
   applyStatus(BallState status) {
-    if (_state == BallState.good || _state == status || status == BallState.unknown) {
+    if (_state == BallState.good ||
+        _state == status ||
+        status == BallState.unknown) {
       return;
-    } else if (_state == BallState.possiblyHeavier && status == BallState.possiblyLighter) {
+    } else if (_state == BallState.possiblyHeavier &&
+        status == BallState.possiblyLighter) {
       _state = BallState.good;
-    } else if (_state == BallState.possiblyLighter && status == BallState.possiblyHeavier) {
+    } else if (_state == BallState.possiblyLighter &&
+        status == BallState.possiblyHeavier) {
       _state = BallState.good;
     } else {
       _state = status;
@@ -33,7 +31,7 @@ class Ball {
 
   String symbol() => Ball.stateSymbol(_state);
 
-  static const stateSymbols = ["?", "↑", "↓", "-"];
+  static const stateSymbols = ["?", "^", "V", "-"];
   static stateSymbol(BallState state) => stateSymbols[state.index];
   static symbolToState(String symbol) {
     try {
@@ -44,9 +42,11 @@ class Ball {
   }
 
   static BallState getOppositeState(BallState state) {
-    return [BallState.unknown,
-            BallState.possiblyHeavier,
-            BallState.possiblyLighter,
-            BallState.good][state.index];
+    return [
+      BallState.unknown,
+      BallState.possiblyHeavier,
+      BallState.possiblyLighter,
+      BallState.good
+    ][state.index];
   }
 }
