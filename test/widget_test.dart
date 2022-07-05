@@ -13,6 +13,7 @@ import 'package:twelve_balls/View/TwelveBallsQuiz.dart';
 import 'package:twelve_balls/main.dart';
 
 import 'load_fonts.dart';
+import 'threshold_file_comparator.dart';
 
 typedef RobotCallback = void Function();
 
@@ -411,13 +412,18 @@ void main() {
   testGoldens('TwelveBalls Golden test', (tester) async {
     final builder = DeviceBuilder()
       ..overrideDevicesForAllScenarios(devices: [Device.phone]);
+    final goldenComparer = GoldenComparer();
 
     var robot = TwelveBallsRobot(tester, TwelveBallsQuizApp());
     builder.addScenario(
       widget: robot.testTarget,
     );
     await tester.pumpDeviceBuilder(builder);
-    await screenMatchesGolden(tester, 'first');
+    await goldenComparer.screenMatchesThreshold(
+      tester,
+      'golden_files/first',
+      threshold: 0.7,
+    );
 
     await robot.startApp();
     robot.iSeeCandidateBalls("????????????");
@@ -436,6 +442,10 @@ void main() {
       ..iSeeLeftBalls("??")
       ..iSeeRightBalls("??");
 
-    await screenMatchesGolden(tester, 'second');
+    await goldenComparer.screenMatchesThreshold(
+      tester,
+      'golden_files/second',
+      threshold: 0.7,
+    );
   });
 }

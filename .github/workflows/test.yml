@@ -21,4 +21,7 @@ jobs:
         flutter-version: '2.10.4'
         channel: 'stable'
     - run: flutter test
-
+    - uses: actions/upload-artifact@v3
+      with:
+        name: golden_files
+        path: test/golden_files/*.png
