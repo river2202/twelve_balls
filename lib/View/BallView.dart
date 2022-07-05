@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:twelve_balls/Model/Ball.dart';
 
 typedef ClickedBallCallback = void Function(Ball ball, BuildContext context);
@@ -8,11 +7,12 @@ class BallView extends StatelessWidget {
   final double _radius = 25;
   final Ball _ball;
   final bool selected;
-  final ClickedBallCallback _onClickedBall;
+  final ClickedBallCallback? _onClickedBall;
   final bool showIndex;
 
   BallView(this._ball, this._onClickedBall,
-      {this.selected = false, this.showIndex = false, Key key}) : super(key: key);
+      {this.selected = false, this.showIndex = false, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class BallView extends StatelessWidget {
       onTap: selected
           ? null
           : () {
-              _onClickedBall(_ball, context);
+              _onClickedBall?.call(_ball, context);
             },
       child: _ballView(),
     );

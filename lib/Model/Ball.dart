@@ -2,12 +2,12 @@ enum BallState { unknown, possiblyLighter, possiblyHeavier, good }
 
 class Ball {
   int index;
-  BallState _state;
+  BallState _state = BallState.unknown;
   BallState get state => _state;
 
   Ball(this.index, [this._state = BallState.unknown]);
-  Ball.from(this.index, {String symbol}) {
-    _state = Ball.symbolToState(symbol) ?? BallState.unknown;
+  Ball.from(this.index, {String symbol = "?"}) {
+    this._state = Ball.symbolToState(symbol);
   }
 
   bool isWeighted() => _state != BallState.unknown;

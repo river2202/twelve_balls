@@ -2,14 +2,16 @@ import 'dart:math';
 import 'dart:ui';
 
 class World {
-  Size screenSize;
+  World();
 
-  double ballSize;
-  Rect ballGroup;
-  Rect scale;
-  Rect leftScale;
-  Rect rightScale;
-  Rect historyBar;
+  late Size screenSize;
+
+  late double ballSize;
+  late Rect ballGroup;
+  late Rect scale;
+  late Rect leftScale;
+  late Rect rightScale;
+  late Rect historyBar;
 
   void init(Size screenSize) {
     this.screenSize = screenSize;

@@ -1,7 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:test/test.dart';
 import 'package:twelve_balls/Model/Ball.dart';
 import 'package:twelve_balls/Model/Quiz.dart';
-import 'package:collection/collection.dart';
 
 Function eq = const ListEquality().equals;
 Function unOrdDeepEq = const DeepCollectionEquality.unordered().equals;
@@ -55,15 +55,15 @@ void main() {
           "????",
           [1, 2],
           [3, 4],
-          List<BallState>()
+          List<BallState>.empty()
         ],
       ];
 
       data.forEach((item) {
-        var quiz = Quiz.from(symbols: item[0]);
-        var worstWeightingResult =
-            quiz.getWorstWeightingResult(item[1], item[2]);
-        List<BallState> resultList = item[3];
+        var quiz = Quiz.from(symbols: item[0] as String);
+        var worstWeightingResult = quiz.getWorstWeightingResult(
+            item[1] as List<int>, item[2] as List<int>);
+        List<BallState> resultList = item[3] as List<BallState>;
         print(
             "quiz: ${quiz.description()}, weighting: ${item[1]}, ${item[2]}, got: $worstWeightingResult, expect: ${item[3]}");
         expect(unOrdDeepEq(resultList, worstWeightingResult), true);
@@ -81,9 +81,9 @@ void main() {
     ];
 
     data.forEach((item) {
-      var quiz1 = Quiz.from(symbols: item[0]);
-      var quiz2 = Quiz.from(symbols: item[1]);
-      bool result = item[2];
+      var quiz1 = Quiz.from(symbols: item[0] as String);
+      var quiz2 = Quiz.from(symbols: item[1] as String);
+      bool result = item[2] as bool;
       expect(quiz1.isEquivalent(quiz2), result,
           reason:
               "${quiz1.description()} should ${result ? "be" : "not be"} equivalent of ${quiz2.description()}");

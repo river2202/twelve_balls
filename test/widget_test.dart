@@ -7,15 +7,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:twelve_balls/View/TwelveBallsQuiz.dart';
+import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:twelve_balls/View/BallView.dart';
-
+import 'package:twelve_balls/View/TwelveBallsQuiz.dart';
 import 'package:twelve_balls/main.dart';
+
+import 'load_fonts.dart';
 
 typedef RobotCallback = void Function();
 
 class Robot {
   WidgetTester tester;
+  Widget get testTarget => _testTarget;
   Widget _testTarget;
 
   Finder findWidgetInGroup(String groupKey, String key) {
@@ -38,6 +41,10 @@ class Robot {
     await tester.pump();
   }
 
+  done() async {
+    await tester.pumpAndSettle();
+  }
+
   waitMs(int milliseconds) async {
     await this.wait(Duration(milliseconds: milliseconds));
   }
@@ -50,7 +57,7 @@ class Robot {
     expect(item, findsNWidgets(number));
   }
 
-  findWidget(Key groupKey, int index, Type type) {
+  findWidget(Key groupKey, int? index, Type type) {
     if (index != null) {
       return find.descendant(
           of: find.byKey(groupKey), matching: find.byKey(Key("$index")));
@@ -69,17 +76,17 @@ class TwelveBallsRobot extends Robot {
   TwelveBallsRobot(WidgetTester tester, Widget testTarget)
       : super(tester, testTarget);
 
-  Finder _findBallView(Key groupKey, int index) {
+  Finder _findBallView(Key groupKey, int? index) {
     return findWidget(groupKey, index, BallView);
   }
 
-  Finder _candidateBall([int index]) =>
+  Finder _candidateBall([int? index]) =>
       _findBallView(TwelveBallsQuizPage.candidateBallGroupViewKey, index);
-  Finder _leftBall([int index]) =>
+  Finder _leftBall([int? index]) =>
       _findBallView(TwelveBallsQuizPage.leftBallGroupViewKey, index);
-  Finder _rightBall([int index]) =>
+  Finder _rightBall([int? index]) =>
       _findBallView(TwelveBallsQuizPage.rightBallGroupViewKey, index);
-  Finder historyStep([int index]) => findWidget(
+  Finder historyStep([int? index]) => findWidget(
       TwelveBallsQuizPage.historyStepGroupViewKey, index, CircleAvatar);
 
   tapCandidate(int i) async => await tester.tap(_candidateBall(i));
@@ -126,7 +133,9 @@ class TwelveBallsRobot extends Robot {
 }
 
 void main() {
-  Finder _findBallView(Key groupKey, int index) {
+  loadFonts();
+
+  Finder _findBallView(Key groupKey, int? index) {
     if (index != null) {
       return find.descendant(
           of: find.byKey(groupKey), matching: find.byKey(Key("$index")));
@@ -136,11 +145,11 @@ void main() {
     }
   }
 
-  Finder _candidateBall([int index]) =>
+  Finder _candidateBall([int? index]) =>
       _findBallView(TwelveBallsQuizPage.candidateBallGroupViewKey, index);
-  Finder _leftBall([int index]) =>
+  Finder _leftBall([int? index]) =>
       _findBallView(TwelveBallsQuizPage.leftBallGroupViewKey, index);
-  Finder _rightBall([int index]) =>
+  Finder _rightBall([int? index]) =>
       _findBallView(TwelveBallsQuizPage.rightBallGroupViewKey, index);
 
   testWidgets('Select ball to weight', (WidgetTester tester) async {
@@ -398,4 +407,35 @@ void main() {
   // Done: 4. test history steps
   // Done: 4. resetting to history step
   // Todo: 5. UI tests 1. Robot pattern, 2. more test
+
+  testGoldens('TwelveBalls Golden test', (tester) async {
+    final builder = DeviceBuilder()
+      ..overrideDevicesForAllScenarios(devices: [Device.phone]);
+
+    var robot = TwelveBallsRobot(tester, TwelveBallsQuizApp());
+    builder.addScenario(
+      widget: robot.testTarget,
+    );
+    await tester.pumpDeviceBuilder(builder);
+    await screenMatchesGolden(tester, 'first');
+
+    await robot.startApp();
+    robot.iSeeCandidateBalls("????????????");
+    robot.iSeeHistorySteps(1);
+
+    await robot.selectLeft();
+    await robot.tapCandidate(0);
+    await robot.tapCandidate(1);
+    await robot.selectRight();
+    await robot.tapCandidate(2);
+    await robot.tapCandidate(3);
+    await robot.doIt();
+
+    robot
+      ..iSeeCandidateBalls("????????????")
+      ..iSeeLeftBalls("??")
+      ..iSeeRightBalls("??");
+
+    await screenMatchesGolden(tester, 'second');
+  });
 }

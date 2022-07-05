@@ -1,7 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:test/test.dart';
 import 'package:twelve_balls/Model/Ball.dart';
 import 'package:twelve_balls/Model/Quiz.dart';
-import 'package:collection/collection.dart';
 
 Function eq = const ListEquality().equals;
 
@@ -32,7 +32,7 @@ void main() {
       ];
 
       data.forEach((data) {
-        var quiz = Quiz.from(symbols: data[0]);
+        var quiz = Quiz.from(symbols: data[0] as String);
 
         if (quiz.getMinimumStep() != data[1]) {
           print(
@@ -49,7 +49,7 @@ void main() {
         BallState.good
       ];
 
-      var minimumStep = quiz.getMinimumStep();
+      var minimumStep = quiz.getMinimumStep() ?? 0;
       print("Quiz: ${quiz.description()}");
 
       var bestWeightingStrategy = quiz.getBestWeightingStrategy();
@@ -62,7 +62,7 @@ void main() {
 
       for (BallState weightingResult in weightingResults) {
         var testQuiz = quiz.testApplyingWeighting(
-            bestWeightingStrategy[0], bestWeightingStrategy[1],
+            bestWeightingStrategy![0], bestWeightingStrategy![1],
             leftGroupState: weightingResult);
         print("apply left: $weightingResult");
         var testMinimumStep = testQuiz.getMinimumStep();
@@ -111,9 +111,10 @@ void main() {
       ];
 
       data.forEach((item) {
-        var quiz = Quiz.from(symbols: item[0]);
-        var testQuiz = quiz.testApplyingWeighting(item[1], item[2],
-            leftGroupState: item[3]);
+        var quiz = Quiz.from(symbols: item[0] as String);
+        var testQuiz = quiz.testApplyingWeighting(
+            item[1] as List<int>, item[2] as List<int>,
+            leftGroupState: item[3] as BallState);
 
         print(
             "quiz: ${quiz.description()}, weighting: ${item[1]}, ${item[2]}, ${item[3]}, got: ${testQuiz.description()}, expect: ${item[4]}");

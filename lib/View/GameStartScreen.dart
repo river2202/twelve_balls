@@ -6,9 +6,7 @@ import 'package:twelve_balls/View/GamePlayScreen.dart';
 import 'SizeConfig.dart';
 
 class GameStartScreen extends StatefulWidget {
-  GameStartScreen({Key key, this.title}) : super(key: key);
-
-  final String title;
+  GameStartScreen({Key? key}) : super(key: key);
 
   @override
   _GameStartScreenState createState() => _GameStartScreenState();
@@ -22,7 +20,7 @@ _startGame(BuildContext context) {
 }
 
 class _GameStartScreenState extends State<GameStartScreen> {
-  String name;
+  late String name;
 
   _GameStartScreenState() {
     name = "12 Balls";
@@ -30,7 +28,7 @@ class _GameStartScreenState extends State<GameStartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
+    final sizeConfig = SizeConfig(context);
 
     final game = Provider.of<World>(context);
     game.init(MediaQuery.of(context).size);
@@ -45,10 +43,10 @@ class _GameStartScreenState extends State<GameStartScreen> {
               color: Colors.white,
             ),
           ),
-          buildMinion(0),
-          buildMinion(240),
-          buildMinion(120),
-          buildMinion(0, alignment: Alignment.center),
+          buildMinion(sizeConfig, 0),
+          buildMinion(sizeConfig, 240),
+          buildMinion(sizeConfig, 120),
+          buildMinion(sizeConfig, 0, alignment: Alignment.center),
         ],
       ),
     );
@@ -56,15 +54,15 @@ class _GameStartScreenState extends State<GameStartScreen> {
     return _scaffold;
   }
 
-  Center buildMinion(double angle,
+  Center buildMinion(SizeConfig sizeConfig, double angle,
       {Alignment alignment = Alignment.bottomLeft}) {
     return Center(
       child: RotationTransition(
         turns: new AlwaysStoppedAnimation(angle / 360),
         child: AnimatedContainer(
           child: buildCircle(50),
-          height: SizeConfig.blockSizeVertical * 25,
-          width: SizeConfig.blockSizeVertical * 25,
+          height: sizeConfig.blockSizeVertical * 25,
+          width: sizeConfig.blockSizeVertical * 25,
           duration: Duration(milliseconds: 5000),
           alignment: alignment,
         ),

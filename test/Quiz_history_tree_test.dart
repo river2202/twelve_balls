@@ -1,7 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:test/test.dart';
 import 'package:twelve_balls/Model/Ball.dart';
 import 'package:twelve_balls/Model/Quiz.dart';
-import 'package:collection/collection.dart';
 import 'package:twelve_balls/Model/WeightingStep.dart';
 
 Function eq = const ListEquality().equals;
@@ -124,12 +124,12 @@ void main() {
       ];
 
       data.forEach((dataItem) {
-        Step item = dataItem[0];
+        Step item = dataItem[0] as Step;
         var step = Step(Quiz.from(symbols: item.quiz.description()));
-        String message = dataItem[2];
+        String message = dataItem[2] as String;
         print("Testing test case: $message");
 
-        step.act(item.leftGroup, item.rightGroup);
+        step.act(item.leftGroup!, item.rightGroup!);
 
         expect(step.leftGroup, item.leftGroup);
         expect(step.rightGroup, item.rightGroup);

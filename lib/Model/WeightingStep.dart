@@ -17,9 +17,9 @@ class WeightingStep extends Quiz {
     this.leftGroupState = step.leftGroupState;
   }
 
-  List<int> leftGroup;
-  List<int> rightGroup;
-  BallState leftGroupState;
+  late List<int> leftGroup;
+  late List<int> rightGroup;
+  late BallState leftGroupState;
 
   bool get solved {
     if (result == null) {
@@ -46,11 +46,11 @@ class Step {
   Step.from(this.quiz, this.leftGroupState, this.leftGroup, this.rightGroup,
       this.results);
 
-  BallState leftGroupState;
+  BallState? leftGroupState;
   Quiz quiz;
 
-  List<int> leftGroup;
-  List<int> rightGroup;
+  List<int>? leftGroup;
+  List<int>? rightGroup;
 
   bool _solved = false;
   bool get solved {
@@ -94,8 +94,13 @@ class Step {
     }
   }
 
-  bool _isEquivalent(Step step) => quiz.isEquivalent(step.quiz);
-  bool _listContains(List<Step> list, Step step) =>
-      list.firstWhere((it) => it._isEquivalent(step), orElse: () => null) !=
-      null;
+  bool _isEquivalent(Step? step) => quiz.isEquivalent(step?.quiz);
+  bool _listContains(List<Step> list, Step step) {
+    try {
+      list.firstWhere((it) => it._isEquivalent(step));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

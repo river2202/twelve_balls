@@ -1,15 +1,16 @@
-import 'package:twelve_balls/Model/Ball.dart';
-import 'package:twelve_balls/Model/Balls.dart';
 import 'dart:math';
 
+import 'package:twelve_balls/Model/Ball.dart';
+import 'package:twelve_balls/Model/Balls.dart';
+
 mixin WeightingStrategy on Balls {
-  int _stepLeftExhaustion() {
+  int? _stepLeftExhaustion() {
     // using exhaustion to search for steps
     // not supported by this version
     return null;
   }
 
-  int _stepLeftForUnknown(int unknown, int good) {
+  int? _stepLeftForUnknown(int unknown, int good) {
     if (unknown == 1 && good <= 0) {
       return null;
     }
@@ -33,7 +34,7 @@ mixin WeightingStrategy on Balls {
     }
   }
 
-  int _stepLeftForDirectionInfo(
+  int? _stepLeftForDirectionInfo(
       int possiblyLighter, int possiblyHeavier, int good) {
     int directionInfo = (possiblyLighter + possiblyHeavier);
 
@@ -48,7 +49,7 @@ mixin WeightingStrategy on Balls {
     return (log(directionInfo) / log(3)).ceil();
   }
 
-  int getMinimumStep() {
+  int? getMinimumStep() {
     var groups = stateGroup();
     if (groups.length < BallState.values.length) {
       return null;
@@ -80,7 +81,7 @@ mixin WeightingStrategy on Balls {
 
 //mixin WeightingStrategy on StepStrategy {
 
-  List<List<int>> _getBestWeightingStrategyForUnknown(
+  List<List<int>>? _getBestWeightingStrategyForUnknown(
       List<Ball> unknownBalls, List<Ball> goodBalls) {
     int unknown = unknownBalls.length;
     int good = goodBalls.length;
@@ -138,7 +139,7 @@ mixin WeightingStrategy on Balls {
     }
   }
 
-  List<List<int>> _getBestWeightingStrategyForDirectionInfo(
+  List<List<int>>? _getBestWeightingStrategyForDirectionInfo(
       List<Ball> possiblyLighterBalls,
       List<Ball> possiblyHeavierBalls,
       List<Ball> goodBalls) {
@@ -174,10 +175,8 @@ mixin WeightingStrategy on Balls {
 
     int leftGroupNum = (directionInfo + 1) ~/ 3;
 
-    var leftGroup = List<
-        int>(); //candidateBalls.where((ball) => ).sublist(0, leftGroupNum).map((ball) => ball.index).toList();
-    var rightGroup = List<
-        int>(); //candidateBalls.sublist(leftGroupNum, leftGroupNum + leftGroupNum).map((ball) => ball.index).toList();
+    List<int> leftGroup = [];
+    List<int> rightGroup = [];
 
     for (int i = 0; i < leftGroupNum; i++) {
       leftGroup.add(candidateBalls[2 * i].index);
@@ -187,7 +186,7 @@ mixin WeightingStrategy on Balls {
     return [leftGroup, rightGroup];
   }
 
-  List<List<int>> getBestWeightingStrategy() {
+  List<List<int>>? getBestWeightingStrategy() {
     var groups = stateBallGroup();
     if (groups.length < BallState.values.length) {
       return null;

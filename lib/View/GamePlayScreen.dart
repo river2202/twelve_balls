@@ -7,16 +7,16 @@ import 'BallGroupView.dart';
 import 'BallView.dart';
 
 class GamePlayScreen extends StatefulWidget {
-  GamePlayScreen({Key key, this.title}) : super(key: key);
+  GamePlayScreen({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _GamePlayScreenState createState() => _GamePlayScreenState();
 }
 
 class _GamePlayScreenState extends State<GamePlayScreen> {
-  String name;
+  late String name;
   _GamePlayScreenState() {
     name = "12 Balls";
   }

@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:twelve_balls/Model/Ball.dart';
+
 import 'BallView.dart';
 
 typedef TapCallback = void Function();
 
 class BallGroupView extends StatelessWidget {
   final List<BallView> ballViews;
-  final TapCallback onClicked;
+  final TapCallback? onClicked;
   final bool selected;
   final BallState groupBallState;
   final bool reverseDirection;
 
   BallGroupView({
-    Key key,
-    @required this.ballViews,
+    Key? key,
+    required this.ballViews,
     this.onClicked,
     this.selected = false,
     this.groupBallState = BallState.unknown,
@@ -76,7 +77,7 @@ class BallGroupView extends StatelessWidget {
       onTap: onClicked == null
           ? null
           : () {
-              onClicked();
+              onClicked?.call();
             },
       child: container,
     );

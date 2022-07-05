@@ -13,7 +13,7 @@ class TwelveBallsQuizPage extends StatefulWidget {
   static const errMsgSelectSameNumberBall = "Select same balls for both side";
   static const errMsgApplyResult = "Please apply reslut before next step.";
 
-  TwelveBallsQuizPage({Key key, this.title}) : super(key: key);
+  TwelveBallsQuizPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -32,8 +32,8 @@ enum QuizPageStatus {
 class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage>
     with HistoryRow {
   WeightingStep _quiz = WeightingStep(12);
-  WeightingStep _historyStep;
-  List<int> activeGroup;
+  WeightingStep? _historyStep;
+  late List<int> activeGroup;
 
   WeightingStep get activeQuiz => _historyStep ?? _quiz;
   _setActiveQuiz(WeightingStep value) {
@@ -219,7 +219,7 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage>
 
   _setState() => setState(() {});
 
-  historyStepTapped(WeightingStep historyStep) {
+  historyStepTapped(WeightingStep? historyStep) {
 //    activeQuiz = historyStep ?? _quiz;
     _setActiveQuiz(historyStep ?? _quiz);
     _setState();
@@ -312,9 +312,9 @@ mixin HistoryRow {
     history.add(step);
   }
 
-  historyStepTapped(WeightingStep historyStep);
+  historyStepTapped(WeightingStep? historyStep);
 
-  _getView(WeightingStep step, int index, bool active) {
+  _getView(WeightingStep? step, int index, bool active) {
     var color = active ? Colors.blue : Colors.grey;
     var title = "${minimumStep - index}";
     var key = Key("$index");
@@ -337,7 +337,7 @@ mixin HistoryRow {
     );
   }
 
-  Widget getHistoryRow({WeightingStep activeStep}) {
+  Widget getHistoryRow({WeightingStep? activeStep}) {
     int length = history.length;
     return Expanded(
         child: Padding(

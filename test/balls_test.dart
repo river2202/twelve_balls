@@ -1,8 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:test/test.dart';
 import 'package:twelve_balls/Model/Ball.dart';
 import 'package:twelve_balls/Model/Balls.dart';
 import 'package:twelve_balls/Model/Quiz.dart';
-import 'package:collection/collection.dart';
 
 Function eq = const ListEquality().equals;
 
@@ -231,8 +231,9 @@ void main() {
       ];
 
       applyWeightingData.forEach((data) {
-        var quiz = Balls.from(symbols: data[0]);
-        quiz.applyWeighting(data[1], data[2], leftGroupState: data[3]);
+        var quiz = Balls.from(symbols: data[0] as String);
+        quiz.applyWeighting(data[1] as List<int>, data[2] as List<int>,
+            leftGroupState: data[3] as BallState);
         if (quiz.description() != data[4]) {
           print("expect: ${data[4]}, got: ${quiz.description()}");
         }
@@ -289,7 +290,7 @@ void main() {
       ];
 
       data.forEach((data) {
-        var quiz = Balls.from(symbols: data[0]);
+        var quiz = Balls.from(symbols: data[0] as String);
 
         if (!eq(quiz.stateGroup(), data[1])) {
           print(
@@ -325,7 +326,7 @@ void main() {
       ];
 
       data.forEach((data) {
-        var quiz = Quiz.from(symbols: data[0]);
+        var quiz = Quiz.from(symbols: data[0] as String);
         var resultBall = quiz.result;
 
         var resultArray =

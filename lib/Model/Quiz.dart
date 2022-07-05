@@ -5,10 +5,10 @@ import 'package:twelve_balls/Model/Strategy.dart';
 class Quiz extends Balls with WeightingStrategy {
   Quiz(int number) : super(number);
   Quiz.fromBalls(balls) : super.fromBalls(balls);
-  Quiz.from({String symbols}) : super.from(symbols: symbols);
+  Quiz.from({required String symbols}) : super.from(symbols: symbols);
 
-  Ball get result {
-    Ball result;
+  Ball? get result {
+    Ball? result;
     for (Ball ball in balls) {
       switch (ball.state) {
         case BallState.unknown:
@@ -29,7 +29,7 @@ class Quiz extends Balls with WeightingStrategy {
   }
 
   Quiz testApplyingWeighting(List<int> leftGroup, List<int> rightGroup,
-      {BallState leftGroupState}) {
+      {required BallState leftGroupState}) {
     var testQuiz = Quiz.from(symbols: this.description());
     testQuiz.applyWeighting(leftGroup, rightGroup,
         leftGroupState: leftGroupState);
@@ -47,7 +47,7 @@ class Quiz extends Balls with WeightingStrategy {
       BallState.possiblyHeavier,
       BallState.good
     ];
-    List<int> minimumSteps = weightingResults.map((possibleResult) {
+    List<int?> minimumSteps = weightingResults.map((possibleResult) {
       if (!validatingWeighting(leftGroup, rightGroup, possibleResult)) {
         return null;
       }
@@ -89,9 +89,9 @@ class Quiz extends Balls with WeightingStrategy {
     return result;
   }
 
-  bool isEquivalent(Quiz quiz) {
+  bool isEquivalent(Quiz? quiz) {
     List<int> group1 = stateGroup();
-    List<int> group2 = quiz.stateGroup();
+    List<int> group2 = quiz?.stateGroup() ?? [];
 
     var compare = () {
       return BallState.values

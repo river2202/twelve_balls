@@ -1,15 +1,14 @@
 import 'package:twelve_balls/Model/Ball.dart';
-import 'package:meta/meta.dart';
 
 class Balls {
-  List<Ball> balls;
+  late List<Ball> balls;
 
   Balls(int number) {
     balls = Iterable<int>.generate(number).map((index) => Ball(index)).toList();
   }
 
   Balls.fromBalls(this.balls);
-  Balls.from({String symbols}) {
+  Balls.from({String symbols = "?"}) {
     int index = 0;
     balls = symbols.runes.map((int char) {
       return Ball.from(index++, symbol: String.fromCharCode(char));
@@ -65,7 +64,7 @@ class Balls {
   }
 
   applyWeighting(List<int> leftGroup, List<int> rightGroup,
-      {@required BallState leftGroupState}) {
+      {required BallState leftGroupState}) {
     if (!validatingWeighting(leftGroup, rightGroup, leftGroupState)) {
       print("_badWeighting: $leftGroup, $rightGroup, $leftGroupState");
       return;
@@ -97,7 +96,7 @@ class Balls {
     try {
       return balls.map((ball) => ball.symbol()).reduce((a, b) => a + b);
     } catch (e) {
-      return null;
+      return "";
     }
   }
 }
