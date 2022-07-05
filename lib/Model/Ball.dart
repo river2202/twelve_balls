@@ -31,7 +31,7 @@ class Ball {
 
   String symbol() => Ball.stateSymbol(_state);
 
-  static const stateSymbols = ["?", "^", "V", "-"];
+  static const stateSymbols = ["?", "↑", "↓", "-"];
   static stateSymbol(BallState state) => stateSymbols[state.index];
   static symbolToState(String symbol) {
     try {
