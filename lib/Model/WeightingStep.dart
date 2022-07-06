@@ -39,6 +39,16 @@ class WeightingStep extends Quiz {
 
   bool isBallSeleced(int index) =>
       leftGroup.indexOf(index) >= 0 || rightGroup.indexOf(index) >= 0;
+
+  void removeFromLeftGroup(int index) {
+    leftGroupState = BallState.unknown;
+    leftGroup.remove(index);
+  }
+
+  void removeFromRightGroup(int index) {
+    leftGroupState = BallState.unknown;
+    rightGroup.remove(index);
+  }
 }
 
 class Step {

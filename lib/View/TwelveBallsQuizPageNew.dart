@@ -30,13 +30,13 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
 
     var leftBallViews = state.quiz.leftGroup
         .map((index) => BallView(
-            state.quiz.balls[index], (ball, _) => vm.clickLeftGroupBall,
+            state.quiz.balls[index], (ball, _) => vm.clickLeftGroupBall(ball),
             key: Key("$index")))
         .toList();
 
     var rightBallViews = state.quiz.rightGroup
         .map((index) => BallView(
-            state.quiz.balls[index], (ball, _) => vm.clickRightGroupBall,
+            state.quiz.balls[index], (ball, _) => vm.clickRightGroupBall(ball),
             key: Key("$index")))
         .toList();
 
