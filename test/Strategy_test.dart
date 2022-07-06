@@ -60,29 +60,31 @@ void main() {
         fail("Not validate bestWeightingStrategy");
       }
 
-      for (BallState weightingResult in weightingResults) {
-        var testQuiz = quiz.testApplyingWeighting(
-            bestWeightingStrategy![0], bestWeightingStrategy![1],
-            leftGroupState: weightingResult);
-        print("apply left: $weightingResult");
-        var testMinimumStep = testQuiz.getMinimumStep();
+      if (bestWeightingStrategy != null) {
+        for (BallState weightingResult in weightingResults) {
+          var testQuiz = quiz.testApplyingWeighting(
+              bestWeightingStrategy[0], bestWeightingStrategy[1],
+              leftGroupState: weightingResult);
+          print("apply left: $weightingResult");
+          var testMinimumStep = testQuiz.getMinimumStep();
 
-        if (testMinimumStep != null) {
-          if (testMinimumStep < minimumStep) {
-            if (testQuiz.result != null) {
-              print("OK, solved, result is ${testQuiz.description()}");
-            } else if (testMinimumStep > 0) {
-              testQuizNextWeighting(testQuiz);
+          if (testMinimumStep != null) {
+            if (testMinimumStep < minimumStep) {
+              if (testQuiz.result != null) {
+                print("OK, solved, result is ${testQuiz.description()}");
+              } else if (testMinimumStep > 0) {
+                testQuizNextWeighting(testQuiz);
+              } else {
+                print("Something went wrong!");
+              }
             } else {
-              print("Something went wrong!");
+              print(
+                  "Failed: Quiz: ${testQuiz.description()}, weighting: $bestWeightingStrategy, result:$weightingResult");
+              expect(testMinimumStep, lessThan(minimumStep));
             }
           } else {
-            print(
-                "Failed: Quiz: ${testQuiz.description()}, weighting: $bestWeightingStrategy, result:$weightingResult");
-            expect(testMinimumStep, lessThan(minimumStep));
+            print("OK, this path has no solution");
           }
-        } else {
-          print("OK, this path has no solution");
         }
       }
     }

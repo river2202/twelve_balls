@@ -29,8 +29,7 @@ enum QuizPageStatus {
   fail,
 }
 
-class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage>
-    with HistoryRow {
+class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
   WeightingStep _quiz = WeightingStep(12);
   WeightingStep? _historyStep;
   late List<int> activeGroup;
@@ -40,23 +39,10 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage>
     _historyStep = value;
   }
 
-//  WeightingStep activeQuiz() {
-//    return _historyStep ?? quiz;
-//  }
-//
   _TwelveBallsQuizPageState() {
     _setActiveQuiz(_quiz);
     activeGroup = activeQuiz.leftGroup;
-//    _historyStep = null;
   }
-//
-//  QuizPageStatus _getStatus () {
-//    if (_historyStep != null) {
-//      return QuizPageStatus.resetting;
-//    }
-//
-//    return QuizPageStatus.loading;
-//  }
 
   _leftIndex() {
     return activeQuiz.leftGroup;
@@ -220,7 +206,6 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage>
   _setState() => setState(() {});
 
   historyStepTapped(WeightingStep? historyStep) {
-//    activeQuiz = historyStep ?? _quiz;
     _setActiveQuiz(historyStep ?? _quiz);
     _setState();
   }
@@ -301,9 +286,7 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage>
       home: _scaffold,
     );
   }
-}
 
-mixin HistoryRow {
   List<WeightingStep> history = [];
   double _radius = 15;
   int minimumStep = 3;
@@ -311,8 +294,6 @@ mixin HistoryRow {
   addHistory(WeightingStep step) {
     history.add(step);
   }
-
-  historyStepTapped(WeightingStep? historyStep);
 
   _getView(WeightingStep? step, int index, bool active) {
     var color = active ? Colors.blue : Colors.grey;

@@ -16,10 +16,7 @@ class GamePlayScreen extends StatefulWidget {
 }
 
 class _GamePlayScreenState extends State<GamePlayScreen> {
-  late String name;
-  _GamePlayScreenState() {
-    name = "12 Balls";
-  }
+  late String name = "12 Balls";
 
   @override
   Widget build(BuildContext context) {
@@ -30,21 +27,18 @@ class _GamePlayScreenState extends State<GamePlayScreen> {
       body: Builder(
         builder: (context) => SafeArea(
           child: Stack(
-//            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               buildBallsView(world),
               buildScale(world.leftScale, Colors.green),
               buildScale(world.rightScale, Colors.red),
               buildScale(world.scale, Colors.orange),
               buildScale(world.historyBar, Colors.black),
-//              buildHistoryBar(world),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your onPressed code here!
           Navigator.pop(context);
         },
         child: Icon(Icons.navigation),

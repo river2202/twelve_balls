@@ -15,5 +15,5 @@ https://puzzling.stackexchange.com/questions/183/twelve-balls-and-a-scale
 https://balls-252804.web.app
 
 ## White boards
-[Challenge solution](https://miro.com/app/board/uXjVOosMZmg=/?share_link_id=688827641776)
-[Flutter app](https://miro.com/app/board/o9J_kuUGWTk=/?share_link_id=856755732527)
+- [Challenge solution](https://miro.com/app/board/uXjVOosMZmg=/?share_link_id=688827641776)
+- [Flutter app](https://miro.com/app/board/o9J_kuUGWTk=/?share_link_id=856755732527)

@@ -12,8 +12,8 @@ import 'package:twelve_balls/View/BallView.dart';
 import 'package:twelve_balls/View/TwelveBallsQuiz.dart';
 import 'package:twelve_balls/main.dart';
 
-import 'load_fonts.dart';
-import 'threshold_file_comparator.dart';
+import 'utils/load_fonts.dart';
+import 'utils/threshold_file_comparator.dart';
 
 typedef RobotCallback = void Function();
 
