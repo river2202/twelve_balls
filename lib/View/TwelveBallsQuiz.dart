@@ -4,6 +4,8 @@ import 'package:twelve_balls/Model/WeightingStep.dart';
 import 'package:twelve_balls/View/BallGroupView.dart';
 import 'package:twelve_balls/View/BallView.dart';
 
+import 'TwelveBallsQuizVM.dart';
+
 // Todo:
 // - move data and logic to TwelveBallsQuizVM
 // - add riverpod and freezed
@@ -37,31 +39,9 @@ enum QuizPageStatus {
 }
 
 class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
-  WeightingStep _quiz = WeightingStep(12);
-  WeightingStep? _historyStep;
-  late List<int> activeGroup;
+  TwelveBallsQuizVM vm = TwelveBallsQuizVM();
 
-  WeightingStep get activeQuiz => _historyStep ?? _quiz;
-  _setActiveQuiz(WeightingStep value) {
-    _historyStep = value;
-  }
-
-  _TwelveBallsQuizPageState() {
-    _setActiveQuiz(_quiz);
-    activeGroup = activeQuiz.leftGroup;
-  }
-
-  _leftIndex() {
-    return activeQuiz.leftGroup;
-  }
-
-  _rightIndex() {
-    return activeQuiz.rightGroup;
-  }
-
-  _weightResult() {
-    return activeQuiz.leftGroupState;
-  }
+  _TwelveBallsQuizPageState() {}
 
   _showSnackBarMessage(String message, BuildContext context) {
     Scaffold.of(context).hideCurrentSnackBar();
@@ -71,7 +51,7 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
   }
 
   _checkResult() {
-    if (activeQuiz.solved) {
+    if (vm.activeQuizSolved()) {
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -90,24 +70,26 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
     }
   }
 
+  _setState() => setState(() {});
+
   void _doWeighting(BuildContext context) {
-    if (_weightResult() == BallState.unknown) {
-      if (_isReadyToWeight()) {
-        var _weightResults =
-            activeQuiz.getWorstWeightingResult(_leftIndex(), _rightIndex());
+    if (vm.weightResult() == BallState.unknown) {
+      if (vm.isReadyToWeight()) {
+        var _weightResults = vm.activeQuiz
+            .getWorstWeightingResult(vm.leftIndex(), vm.rightIndex());
         if (_weightResults.length > 0) {
-          activeQuiz.leftGroupState = _weightResults.first;
-          print("_weightResult: $_weightResult");
+          vm.activeQuiz.leftGroupState = _weightResults.first;
+          print("_weightResult: ${vm.weightResult()}");
 
           // todo: move this animation to widget
-          if (_weightResult() == BallState.good) {
-            activeQuiz.leftGroupState = BallState.possiblyHeavier;
+          if (vm.weightResult() == BallState.good) {
+            vm.activeQuiz.leftGroupState = BallState.possiblyHeavier;
             Future.delayed(const Duration(milliseconds: 250), () {
-              activeQuiz.leftGroupState = BallState.possiblyLighter;
+              vm.activeQuiz.leftGroupState = BallState.possiblyLighter;
               setState(() {});
 
               Future.delayed(const Duration(milliseconds: 350), () {
-                activeQuiz.leftGroupState = BallState.good;
+                vm.activeQuiz.leftGroupState = BallState.good;
                 setState(() {});
               });
             });
@@ -121,116 +103,78 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
             TwelveBallsQuizPage.errMsgSelectSameNumberBall, context);
       }
     } else {
-      if (history.contains(activeQuiz)) {
-        var index = history.indexOf(activeQuiz);
-        history.removeRange(index, history.length);
-        _quiz = WeightingStep.from(activeQuiz);
-//        activeQuiz = _quiz;
-        _setActiveQuiz(_quiz);
+      if (vm.history.contains(vm.activeQuiz)) {
+        var index = vm.history.indexOf(vm.activeQuiz);
+        vm.history.removeRange(index, vm.history.length);
+        vm.quiz = WeightingStep.from(vm.activeQuiz);
+        vm.setActiveQuiz(vm.quiz);
       }
 
-      history.add(WeightingStep.from(activeQuiz));
+      vm.history.add(WeightingStep.from(vm.activeQuiz));
       // Apply and check
-      activeQuiz.doWeighting();
-      activeGroup = activeQuiz.leftGroup;
+      vm.activeQuiz.doWeighting();
+      vm.activeGroup = vm.activeQuiz.leftGroup;
       _setState();
       _checkResult();
     }
   }
 
-  _setLoading() {
-    activeQuiz.leftGroupState = BallState.unknown;
-  }
-
   void _clickCandidateBall(Ball ball, BuildContext context) {
-    _setLoading();
-
-    if (activeGroup.indexOf(ball.index) < 0) {
-      activeGroup.add(ball.index);
-      activeGroup.sort((a, b) => b.compareTo(a));
-    }
+    vm.clickCandidateBall(ball);
     setState(() {});
   }
 
   void _clickLeftGroupBall(Ball ball, BuildContext context) {
-    _setLoading();
-
-    activeQuiz.leftGroup.remove(ball.index);
+    vm.clickLeftGroupBall(ball);
     setState(() {});
   }
 
   void _clickRightGroupBall(Ball ball, BuildContext context) {
-    _setLoading();
-
-    activeQuiz.rightGroup.remove(ball.index);
+    vm.clickRightGroupBall(ball);
     setState(() {});
   }
 
   void _clickLeftGroup() {
     print("Select Left Group");
-    activeGroup = activeQuiz.leftGroup;
+    vm.clickLeftGroup();
     setState(() {});
   }
 
   void _clickRightGroup() {
     print("Select Right Group");
-    activeGroup = activeQuiz.rightGroup;
+    vm.clickRightGroup();
     setState(() {});
   }
 
-  bool _isReadyToWeight() =>
-      activeQuiz.leftGroup.length > 0 &&
-      activeQuiz.leftGroup.length == activeQuiz.rightGroup.length;
-
-  bool _isBallSeleced(Ball ball) =>
-      activeQuiz.leftGroup.indexOf(ball.index) >= 0 ||
-      activeQuiz.rightGroup.indexOf(ball.index) >= 0;
-
-  BallState _getLeftWeightResult() {
-    return _weightResult();
-  }
-
-  BallState _getRightWeightResult() {
-    return Ball.getOppositeState(_weightResult());
-  }
-
-  String _getWeightButtonText() {
-    if (_weightResult() == BallState.unknown) {
-      return _isReadyToWeight() ? "Weight" : "Loading";
-    } else {
-      return "Apply";
-    }
+  _historyStepTapped(WeightingStep? historyStep) {
+    vm.setActiveQuiz(historyStep);
+    _setState();
   }
 
   Color _getWeightButtonColor() {
-    if (_weightResult() == BallState.unknown) {
-      return _isReadyToWeight() ? Colors.blue : Colors.grey;
+    if (vm.weightResult() == BallState.unknown) {
+      return vm.isReadyToWeight() ? Colors.blue : Colors.grey;
     } else {
       return Colors.red;
     }
   }
 
-  _setState() => setState(() {});
-
-  historyStepTapped(WeightingStep? historyStep) {
-    _setActiveQuiz(historyStep ?? _quiz);
-    _setState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    var candidateBallViews = activeQuiz.balls
+    var candidateBallViews = vm.activeQuiz.balls
         .map((ball) => BallView(ball, _clickCandidateBall,
-            selected: _isBallSeleced(ball), key: Key("${ball.index}")))
+            selected: vm.isBallSeleced(ball), key: Key("${ball.index}")))
         .toList();
 
-    var leftBallViews = activeQuiz.leftGroup
-        .map((index) => BallView(activeQuiz.balls[index], _clickLeftGroupBall,
+    var leftBallViews = vm.activeQuiz.leftGroup
+        .map((index) => BallView(
+            vm.activeQuiz.balls[index], _clickLeftGroupBall,
             key: Key("$index")))
         .toList();
 
-    var rightBallViews = activeQuiz.rightGroup
-        .map((index) => BallView(activeQuiz.balls[index], _clickRightGroupBall,
+    var rightBallViews = vm.activeQuiz.rightGroup
+        .map((index) => BallView(
+            vm.activeQuiz.balls[index], _clickRightGroupBall,
             key: Key("$index")))
         .toList();
 
@@ -253,18 +197,18 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
                         key: TwelveBallsQuizPage.leftBallGroupViewKey,
                         ballViews: leftBallViews,
                         onClicked: _clickLeftGroup,
-                        selected: activeGroup == activeQuiz.leftGroup,
+                        selected: vm.activeGroup == vm.activeQuiz.leftGroup,
                         reverseDirection: true,
-                        groupBallState: _getLeftWeightResult()),
+                        groupBallState: vm.getLeftWeightResult()),
                   ),
                   Expanded(
                     child: new BallGroupView(
                         key: TwelveBallsQuizPage.rightBallGroupViewKey,
                         ballViews: rightBallViews,
                         onClicked: _clickRightGroup,
-                        selected: activeGroup == activeQuiz.rightGroup,
+                        selected: vm.activeGroup == vm.activeQuiz.rightGroup,
                         reverseDirection: true,
-                        groupBallState: _getRightWeightResult()),
+                        groupBallState: vm.getRightWeightResult()),
                   ),
                 ],
               ),
@@ -277,10 +221,10 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
                   child: RaisedButton(
                     color: _getWeightButtonColor(),
                     onPressed: () => _doWeighting(context),
-                    child: Text(_getWeightButtonText()),
+                    child: Text(vm.getWeightButtonText()),
                   ),
                 ),
-                getHistoryRow(activeStep: activeQuiz),
+                getHistoryRow(activeStep: vm.activeQuiz),
               ],
             ),
           ],
@@ -294,13 +238,25 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
     );
   }
 
-  List<WeightingStep> history = [];
-  double _radius = 15;
-  int minimumStep = 3;
-
-  addHistory(WeightingStep step) {
-    history.add(step);
+  Widget getHistoryRow({WeightingStep? activeStep}) {
+    int length = vm.history.length;
+    return Expanded(
+        child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Wrap(
+          key: TwelveBallsQuizPage.historyStepGroupViewKey,
+          spacing: 5.0,
+          alignment: WrapAlignment.end,
+          children: [
+            for (int i = 0; i < length; i++)
+              _getView(vm.history[i], i, activeStep == vm.history[i]),
+            _getView(null, length, !vm.history.contains(activeStep))
+          ]),
+    ));
   }
+
+  static const double _radius = 15;
+  static const int minimumStep = 3;
 
   _getView(WeightingStep? step, int index, bool active) {
     var color = active ? Colors.blue : Colors.grey;
@@ -320,25 +276,8 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
       ),
     );
     return GestureDetector(
-      onTap: () => historyStepTapped(step),
+      onTap: () => _historyStepTapped(step),
       child: circle,
     );
-  }
-
-  Widget getHistoryRow({WeightingStep? activeStep}) {
-    int length = history.length;
-    return Expanded(
-        child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Wrap(
-          key: TwelveBallsQuizPage.historyStepGroupViewKey,
-          spacing: 5.0,
-          alignment: WrapAlignment.end,
-          children: [
-            for (int i = 0; i < length; i++)
-              _getView(history[i], i, activeStep == history[i]),
-            _getView(null, length, !history.contains(activeStep))
-          ]),
-    ));
   }
 }
