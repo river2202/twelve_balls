@@ -6,12 +6,16 @@ import 'package:twelve_balls/View/BallView.dart';
 
 import 'TwelveBallsQuizVM.dart';
 
-// Todo:
-// - move data and logic to TwelveBallsQuizVM
-// - add riverpod and freezed
-// - refactor to state
-// - unit test TwelveBallsQuizVMProvider
-// - mock and golden test most state of TwelveBallsQuizPage
+// Plan:
+// - Done: move data and logic to TwelveBallsQuizVM - fast done, just for demo
+//    benefit - can unit test VM and easier to exhaust all edge cases
+//    benefit - can use mock VM to have screenshot of all state of TwelveBallsQuizPage
+// - Skip: add unit test for TwelveBallsQuizVM and test most cases
+// - Skip: mock and golden test most state of TwelveBallsQuizPage with mock vm
+//    have to fast forward otherwise can't finish in time
+// - Todo: add riverpod and freezed
+// - Todo: refactor to state
+// - Todo: unit test TwelveBallsQuizVMProvider
 
 class TwelveBallsQuizPage extends StatefulWidget {
   static const candidateBallGroupViewKey = Key("candidateBallGroupViewKey");
