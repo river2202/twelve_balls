@@ -13,8 +13,9 @@ import 'TwelveBallsQuizVM.dart';
 // - Skip: add unit test for TwelveBallsQuizVM and test most cases
 // - Skip: mock and golden test most state of TwelveBallsQuizPage with mock vm
 //    have to fast forward otherwise can't finish in time
-// - Todo: add riverpod and freezed
-// - Todo: refactor to state
+// - done: add riverpod and freezed
+// - Todo: refactor to state - declarative way
+//    problem for vm: allow error state and logic is not clear enough
 // - Todo: unit test TwelveBallsQuizVMProvider
 
 class TwelveBallsQuizPage extends StatefulWidget {

@@ -11,6 +11,9 @@ dependencies:
   flare_flutter: ^3.0.2
   provider: ^6.0.3
   dartz: ^0.10.1
+  flutter_riverpod:
+  freezed:
+  freezed_annotation:
 
 dev_dependencies:
   test: ^1.19.5
