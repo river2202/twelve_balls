@@ -4,6 +4,13 @@ import 'package:twelve_balls/Model/WeightingStep.dart';
 import 'package:twelve_balls/View/BallGroupView.dart';
 import 'package:twelve_balls/View/BallView.dart';
 
+// Todo:
+// - move data and logic to TwelveBallsQuizVM
+// - add riverpod and freezed
+// - refactor to state
+// - unit test TwelveBallsQuizVMProvider
+// - mock and golden test most state of TwelveBallsQuizPage
+
 class TwelveBallsQuizPage extends StatefulWidget {
   static const candidateBallGroupViewKey = Key("candidateBallGroupViewKey");
   static const leftBallGroupViewKey = Key("leftBallGroupViewKey");
