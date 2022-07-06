@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:provider/provider.dart';
 
 import 'Game/World.dart';
 import 'View/GameStartScreen.dart';
-import 'View/TwelveBallsQuiz.dart';
+import 'View/TwelveBallsQuizPageNew.dart';
 
 void main() {
   runApp(Provider(
@@ -31,12 +32,15 @@ class TwelveBallsQuizApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return riverpod.ProviderScope(
+      child: MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: TwelveBallsQuizPageNew(),
+        // home: TwelveBallsQuizPage(title: '12 Balls Challenge'),
       ),
-      debugShowCheckedModeBanner: false,
-      home: TwelveBallsQuizPage(title: '12 Balls Challenge'),
     );
   }
 }

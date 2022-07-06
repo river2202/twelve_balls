@@ -20,6 +20,7 @@ class WeightingStep extends Quiz {
   late List<int> leftGroup;
   late List<int> rightGroup;
   late BallState leftGroupState;
+  BallState get rightGroupState => Ball.getOppositeState(leftGroupState);
 
   bool get solved {
     if (result == null) {
@@ -35,6 +36,9 @@ class WeightingStep extends Quiz {
     leftGroup = [];
     rightGroup = [];
   }
+
+  bool isBallSeleced(int index) =>
+      leftGroup.indexOf(index) >= 0 || rightGroup.indexOf(index) >= 0;
 }
 
 class Step {
