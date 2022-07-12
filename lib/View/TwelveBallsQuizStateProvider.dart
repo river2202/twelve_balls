@@ -48,6 +48,31 @@ class TwelveBallsState with _$TwelveBallsState {
         rightGroupActive: (s) => true,
         historySetpActive: (s) => false,
       );
+
+  String _getWeightButtonText(WeightingStep quiz) {
+    if (quiz.isReadToWeight)
+      return "Weight";
+    else
+      return "Loading";
+  }
+
+  String get getWeightButtonText => map(
+        leftGroupActive: (s) => _getWeightButtonText(s.quiz),
+        rightGroupActive: (s) => _getWeightButtonText(s.quiz),
+        historySetpActive: (s) => "Apply",
+      );
+
+  List<WeightingStep> get history => map(
+        leftGroupActive: (s) => s.history,
+        rightGroupActive: (s) => s.history,
+        historySetpActive: (s) => s.history,
+      );
+
+  int get historyActiveIndex => map(
+        leftGroupActive: (s) => s.history.length,
+        rightGroupActive: (s) => s.history.length,
+        historySetpActive: (s) => s.index,
+      );
 }
 
 class TwelveBallsQuizNotifier extends StateNotifier<TwelveBallsState> {
@@ -129,6 +154,9 @@ class TwelveBallsQuizNotifier extends StateNotifier<TwelveBallsState> {
       historySetpActive: (index, history) {},
     );
   }
+
+  void doWeighting() {}
+  void onHistoryTap(int index) {}
 }
 
 final twelveBallsQuizStateProvider = StateNotifierProvider.autoDispose<

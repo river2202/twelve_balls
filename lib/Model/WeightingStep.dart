@@ -30,6 +30,10 @@ class WeightingStep extends Quiz {
     return true;
   }
 
+  bool get isReadToWeight {
+    return leftGroup.length > 0 && leftGroup.length == rightGroup.length;
+  }
+
   doWeighting() {
     applyWeighting(leftGroup, rightGroup, leftGroupState: leftGroupState);
     leftGroupState = BallState.unknown;

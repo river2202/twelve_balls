@@ -6,6 +6,8 @@ import 'BallGroupView.dart';
 import 'BallView.dart';
 import 'TwelveBallsQuizStateProvider.dart';
 
+typedef HistoryStepTapped = void Function(int);
+
 class TwelveBallsQuizPageNew extends ConsumerWidget {
   static const candidateBallGroupViewKey = Key("candidateBallGroupViewKey");
   static const leftBallGroupViewKey = Key("leftBallGroupViewKey");
@@ -74,20 +76,21 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
                 ],
               ),
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   children: <Widget>[
-            //     Padding(
-            //       padding: const EdgeInsets.all(8.0),
-            //       child: RaisedButton(
-            //         color: _getWeightButtonColor(),
-            //         onPressed: () => _doWeighting(context),
-            //         child: Text(vm.getWeightButtonText()),
-            //       ),
-            //     ),
-            //     getHistoryRow(activeStep: vm.activeQuiz),
-            //   ],
-            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RaisedButton(
+                    color: _getWeightButtonColor(),
+                    onPressed: () => vm.doWeighting(),
+                    child: Text(state.getWeightButtonText),
+                  ),
+                ),
+                getHistoryRow(state.history.length + 1,
+                    state.historyActiveIndex, vm.onHistoryTap),
+              ],
+            ),
           ],
         ),
       ),
@@ -96,6 +99,55 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
     return MaterialApp(
       title: '12 Balls',
       home: _scaffold,
+    );
+  }
+
+  Color _getWeightButtonColor() {
+    // if (vm.weightResult() == BallState.unknown) {
+    //   return vm.isReadyToWeight() ? Colors.blue : Colors.grey;
+    // } else {
+    return Colors.red;
+    // }
+  }
+
+  Widget getHistoryRow(int length, int activeIndex, HistoryStepTapped onTap) {
+    return Expanded(
+        child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Wrap(
+          key: historyStepGroupViewKey,
+          spacing: 5.0,
+          alignment: WrapAlignment.end,
+          children: [
+            for (int i = 0; i < length; i++)
+              _getView(i, activeIndex == i, onTap),
+          ]),
+    ));
+  }
+
+  static const double _radius = 15;
+  static const int minimumStep = 3;
+
+  _getView(int index, bool active, HistoryStepTapped onTap) {
+    var color = active ? Colors.blue : Colors.grey;
+    var title = "${minimumStep - index}";
+    var key = Key("$index");
+
+    var circle = new CircleAvatar(
+      key: key,
+      backgroundColor: color,
+      radius: _radius,
+      child: Text(
+        title,
+        style: TextStyle(
+            fontSize: _radius,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
+      ),
+    );
+    return GestureDetector(
+      onTap: () => onTap(index),
+      child: circle,
     );
   }
 }
