@@ -22,6 +22,7 @@ jobs:
         channel: 'stable'
     - run: flutter test
     - uses: actions/upload-artifact@v3
+      if: failure()
       with:
-        name: golden_files
-        path: test/golden_files/*.png
+        name: golden_test_failures
+        path: test/failures/*.png
