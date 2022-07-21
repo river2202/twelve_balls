@@ -301,7 +301,8 @@ void main() {
   // Done: 3. Doing and Applying weighting
   // Done: 4. test history steps
   // Done: 4. resetting to history step
-  // Todo: 5. UI tests 1. Robot pattern, 2. more test
+  // Done: 5. UI tests 1. Robot pattern,
+  // Todo: 6. more golden test with layout using mock state
 
   testGoldens('TwelveBalls Golden test', (tester) async {
     var robot = TwelveBallsRobot(tester, getTwelveBallsQuizApp());
@@ -309,6 +310,7 @@ void main() {
     await robot.startApp();
     robot.iSeeCandidateBalls("????????????");
     robot.iSeeHistorySteps(1);
+    robot.done();
     await robot.goldenTest('first');
 
     await robot.selectLeft();

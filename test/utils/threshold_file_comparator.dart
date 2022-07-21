@@ -27,7 +27,7 @@ class GoldenComparer {
     goldenFileComparator = ThresholdFileComparator(
       path.join(
         _absPath,
-        name,
+        "name",
       ),
     );
     if (threshold != null) {

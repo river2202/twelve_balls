@@ -23,22 +23,24 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.watch(twelveBallsQuizStateProvider.notifier);
     final state = ref.watch(twelveBallsQuizStateProvider);
+    final quiz = state.quiz;
+    print("TwelveBallsQuizPageNew: build: ${quiz.description()}");
 
-    var candidateBallViews = state.quiz.balls
+    var candidateBallViews = quiz.balls
         .map((ball) => BallView(ball, (ball, _) => vm.clickCandidateBall(ball),
-            selected: state.quiz.isBallSeleced(ball.index),
+            selected: quiz.isBallSeleced(ball.index),
             key: Key("${ball.index}")))
         .toList();
 
-    var leftBallViews = state.quiz.leftGroup
+    var leftBallViews = quiz.leftGroup
         .map((index) => BallView(
-            state.quiz.balls[index], (ball, _) => vm.clickLeftGroupBall(ball),
+            quiz.balls[index], (ball, _) => vm.clickLeftGroupBall(ball),
             key: Key("$index")))
         .toList();
 
-    var rightBallViews = state.quiz.rightGroup
+    var rightBallViews = quiz.rightGroup
         .map((index) => BallView(
-            state.quiz.balls[index], (ball, _) => vm.clickRightGroupBall(ball),
+            quiz.balls[index], (ball, _) => vm.clickRightGroupBall(ball),
             key: Key("$index")))
         .toList();
 
@@ -86,8 +88,8 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
                     state.weightButtonType,
                   ),
                 ),
-                getHistoryRow(state.history.length + 1,
-                    state.historyActiveIndex, vm.onHistoryTap),
+                getHistoryRow(state.history.length, state.historyActiveIndex,
+                    vm.onHistoryTap),
               ],
             ),
           ],

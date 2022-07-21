@@ -17,26 +17,17 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$TwelveBallsStateTearOff {
   const _$TwelveBallsStateTearOff();
 
-  LeftGroupActive leftGroupActive(
-      WeightingStep quiz, List<WeightingStep> history) {
+  LeftGroupActive leftGroupActive(List<WeightingStep> history, int index) {
     return LeftGroupActive(
-      quiz,
       history,
-    );
-  }
-
-  RightGroupActive rightGroupActive(
-      WeightingStep quiz, List<WeightingStep> history) {
-    return RightGroupActive(
-      quiz,
-      history,
-    );
-  }
-
-  HistorySetpActive historySetpActive(int index, List<WeightingStep> history) {
-    return HistorySetpActive(
       index,
+    );
+  }
+
+  RightGroupActive rightGroupActive(List<WeightingStep> history, int index) {
+    return RightGroupActive(
       history,
+      index,
     );
   }
 }
@@ -47,33 +38,26 @@ const $TwelveBallsState = _$TwelveBallsStateTearOff();
 /// @nodoc
 mixin _$TwelveBallsState {
   List<WeightingStep> get history => throw _privateConstructorUsedError;
+  int get index => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(WeightingStep quiz, List<WeightingStep> history)
+    required TResult Function(List<WeightingStep> history, int index)
         leftGroupActive,
-    required TResult Function(WeightingStep quiz, List<WeightingStep> history)
+    required TResult Function(List<WeightingStep> history, int index)
         rightGroupActive,
-    required TResult Function(int index, List<WeightingStep> history)
-        historySetpActive,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        leftGroupActive,
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        rightGroupActive,
-    TResult Function(int index, List<WeightingStep> history)? historySetpActive,
+    TResult Function(List<WeightingStep> history, int index)? leftGroupActive,
+    TResult Function(List<WeightingStep> history, int index)? rightGroupActive,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        leftGroupActive,
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        rightGroupActive,
-    TResult Function(int index, List<WeightingStep> history)? historySetpActive,
+    TResult Function(List<WeightingStep> history, int index)? leftGroupActive,
+    TResult Function(List<WeightingStep> history, int index)? rightGroupActive,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -81,21 +65,18 @@ mixin _$TwelveBallsState {
   TResult map<TResult extends Object?>({
     required TResult Function(LeftGroupActive value) leftGroupActive,
     required TResult Function(RightGroupActive value) rightGroupActive,
-    required TResult Function(HistorySetpActive value) historySetpActive,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(LeftGroupActive value)? leftGroupActive,
     TResult Function(RightGroupActive value)? rightGroupActive,
-    TResult Function(HistorySetpActive value)? historySetpActive,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(LeftGroupActive value)? leftGroupActive,
     TResult Function(RightGroupActive value)? rightGroupActive,
-    TResult Function(HistorySetpActive value)? historySetpActive,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -110,7 +91,7 @@ abstract class $TwelveBallsStateCopyWith<$Res> {
   factory $TwelveBallsStateCopyWith(
           TwelveBallsState value, $Res Function(TwelveBallsState) then) =
       _$TwelveBallsStateCopyWithImpl<$Res>;
-  $Res call({List<WeightingStep> history});
+  $Res call({List<WeightingStep> history, int index});
 }
 
 /// @nodoc
@@ -125,12 +106,17 @@ class _$TwelveBallsStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? history = freezed,
+    Object? index = freezed,
   }) {
     return _then(_value.copyWith(
       history: history == freezed
           ? _value.history
           : history // ignore: cast_nullable_to_non_nullable
               as List<WeightingStep>,
+      index: index == freezed
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -142,7 +128,7 @@ abstract class $LeftGroupActiveCopyWith<$Res>
           LeftGroupActive value, $Res Function(LeftGroupActive) then) =
       _$LeftGroupActiveCopyWithImpl<$Res>;
   @override
-  $Res call({WeightingStep quiz, List<WeightingStep> history});
+  $Res call({List<WeightingStep> history, int index});
 }
 
 /// @nodoc
@@ -158,18 +144,18 @@ class _$LeftGroupActiveCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? quiz = freezed,
     Object? history = freezed,
+    Object? index = freezed,
   }) {
     return _then(LeftGroupActive(
-      quiz == freezed
-          ? _value.quiz
-          : quiz // ignore: cast_nullable_to_non_nullable
-              as WeightingStep,
       history == freezed
           ? _value.history
           : history // ignore: cast_nullable_to_non_nullable
               as List<WeightingStep>,
+      index == freezed
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -177,16 +163,16 @@ class _$LeftGroupActiveCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LeftGroupActive extends LeftGroupActive {
-  const _$LeftGroupActive(this.quiz, this.history) : super._();
+  const _$LeftGroupActive(this.history, this.index) : super._();
 
   @override
-  final WeightingStep quiz;
-  @override
   final List<WeightingStep> history;
+  @override
+  final int index;
 
   @override
   String toString() {
-    return 'TwelveBallsState.leftGroupActive(quiz: $quiz, history: $history)';
+    return 'TwelveBallsState.leftGroupActive(history: $history, index: $index)';
   }
 
   @override
@@ -194,15 +180,15 @@ class _$LeftGroupActive extends LeftGroupActive {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is LeftGroupActive &&
-            const DeepCollectionEquality().equals(other.quiz, quiz) &&
-            const DeepCollectionEquality().equals(other.history, history));
+            const DeepCollectionEquality().equals(other.history, history) &&
+            const DeepCollectionEquality().equals(other.index, index));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(quiz),
-      const DeepCollectionEquality().hash(history));
+      const DeepCollectionEquality().hash(history),
+      const DeepCollectionEquality().hash(index));
 
   @JsonKey(ignore: true)
   @override
@@ -212,40 +198,32 @@ class _$LeftGroupActive extends LeftGroupActive {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(WeightingStep quiz, List<WeightingStep> history)
+    required TResult Function(List<WeightingStep> history, int index)
         leftGroupActive,
-    required TResult Function(WeightingStep quiz, List<WeightingStep> history)
+    required TResult Function(List<WeightingStep> history, int index)
         rightGroupActive,
-    required TResult Function(int index, List<WeightingStep> history)
-        historySetpActive,
   }) {
-    return leftGroupActive(quiz, history);
+    return leftGroupActive(history, index);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        leftGroupActive,
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        rightGroupActive,
-    TResult Function(int index, List<WeightingStep> history)? historySetpActive,
+    TResult Function(List<WeightingStep> history, int index)? leftGroupActive,
+    TResult Function(List<WeightingStep> history, int index)? rightGroupActive,
   }) {
-    return leftGroupActive?.call(quiz, history);
+    return leftGroupActive?.call(history, index);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        leftGroupActive,
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        rightGroupActive,
-    TResult Function(int index, List<WeightingStep> history)? historySetpActive,
+    TResult Function(List<WeightingStep> history, int index)? leftGroupActive,
+    TResult Function(List<WeightingStep> history, int index)? rightGroupActive,
     required TResult orElse(),
   }) {
     if (leftGroupActive != null) {
-      return leftGroupActive(quiz, history);
+      return leftGroupActive(history, index);
     }
     return orElse();
   }
@@ -255,7 +233,6 @@ class _$LeftGroupActive extends LeftGroupActive {
   TResult map<TResult extends Object?>({
     required TResult Function(LeftGroupActive value) leftGroupActive,
     required TResult Function(RightGroupActive value) rightGroupActive,
-    required TResult Function(HistorySetpActive value) historySetpActive,
   }) {
     return leftGroupActive(this);
   }
@@ -265,7 +242,6 @@ class _$LeftGroupActive extends LeftGroupActive {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(LeftGroupActive value)? leftGroupActive,
     TResult Function(RightGroupActive value)? rightGroupActive,
-    TResult Function(HistorySetpActive value)? historySetpActive,
   }) {
     return leftGroupActive?.call(this);
   }
@@ -275,7 +251,6 @@ class _$LeftGroupActive extends LeftGroupActive {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(LeftGroupActive value)? leftGroupActive,
     TResult Function(RightGroupActive value)? rightGroupActive,
-    TResult Function(HistorySetpActive value)? historySetpActive,
     required TResult orElse(),
   }) {
     if (leftGroupActive != null) {
@@ -286,13 +261,14 @@ class _$LeftGroupActive extends LeftGroupActive {
 }
 
 abstract class LeftGroupActive extends TwelveBallsState {
-  const factory LeftGroupActive(
-      WeightingStep quiz, List<WeightingStep> history) = _$LeftGroupActive;
+  const factory LeftGroupActive(List<WeightingStep> history, int index) =
+      _$LeftGroupActive;
   const LeftGroupActive._() : super._();
 
-  WeightingStep get quiz;
   @override
   List<WeightingStep> get history;
+  @override
+  int get index;
   @override
   @JsonKey(ignore: true)
   $LeftGroupActiveCopyWith<LeftGroupActive> get copyWith =>
@@ -306,7 +282,7 @@ abstract class $RightGroupActiveCopyWith<$Res>
           RightGroupActive value, $Res Function(RightGroupActive) then) =
       _$RightGroupActiveCopyWithImpl<$Res>;
   @override
-  $Res call({WeightingStep quiz, List<WeightingStep> history});
+  $Res call({List<WeightingStep> history, int index});
 }
 
 /// @nodoc
@@ -322,18 +298,18 @@ class _$RightGroupActiveCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? quiz = freezed,
     Object? history = freezed,
+    Object? index = freezed,
   }) {
     return _then(RightGroupActive(
-      quiz == freezed
-          ? _value.quiz
-          : quiz // ignore: cast_nullable_to_non_nullable
-              as WeightingStep,
       history == freezed
           ? _value.history
           : history // ignore: cast_nullable_to_non_nullable
               as List<WeightingStep>,
+      index == freezed
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -341,16 +317,16 @@ class _$RightGroupActiveCopyWithImpl<$Res>
 /// @nodoc
 
 class _$RightGroupActive extends RightGroupActive {
-  const _$RightGroupActive(this.quiz, this.history) : super._();
+  const _$RightGroupActive(this.history, this.index) : super._();
 
   @override
-  final WeightingStep quiz;
-  @override
   final List<WeightingStep> history;
+  @override
+  final int index;
 
   @override
   String toString() {
-    return 'TwelveBallsState.rightGroupActive(quiz: $quiz, history: $history)';
+    return 'TwelveBallsState.rightGroupActive(history: $history, index: $index)';
   }
 
   @override
@@ -358,15 +334,15 @@ class _$RightGroupActive extends RightGroupActive {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is RightGroupActive &&
-            const DeepCollectionEquality().equals(other.quiz, quiz) &&
-            const DeepCollectionEquality().equals(other.history, history));
+            const DeepCollectionEquality().equals(other.history, history) &&
+            const DeepCollectionEquality().equals(other.index, index));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(quiz),
-      const DeepCollectionEquality().hash(history));
+      const DeepCollectionEquality().hash(history),
+      const DeepCollectionEquality().hash(index));
 
   @JsonKey(ignore: true)
   @override
@@ -376,40 +352,32 @@ class _$RightGroupActive extends RightGroupActive {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(WeightingStep quiz, List<WeightingStep> history)
+    required TResult Function(List<WeightingStep> history, int index)
         leftGroupActive,
-    required TResult Function(WeightingStep quiz, List<WeightingStep> history)
+    required TResult Function(List<WeightingStep> history, int index)
         rightGroupActive,
-    required TResult Function(int index, List<WeightingStep> history)
-        historySetpActive,
   }) {
-    return rightGroupActive(quiz, history);
+    return rightGroupActive(history, index);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        leftGroupActive,
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        rightGroupActive,
-    TResult Function(int index, List<WeightingStep> history)? historySetpActive,
+    TResult Function(List<WeightingStep> history, int index)? leftGroupActive,
+    TResult Function(List<WeightingStep> history, int index)? rightGroupActive,
   }) {
-    return rightGroupActive?.call(quiz, history);
+    return rightGroupActive?.call(history, index);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        leftGroupActive,
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        rightGroupActive,
-    TResult Function(int index, List<WeightingStep> history)? historySetpActive,
+    TResult Function(List<WeightingStep> history, int index)? leftGroupActive,
+    TResult Function(List<WeightingStep> history, int index)? rightGroupActive,
     required TResult orElse(),
   }) {
     if (rightGroupActive != null) {
-      return rightGroupActive(quiz, history);
+      return rightGroupActive(history, index);
     }
     return orElse();
   }
@@ -419,7 +387,6 @@ class _$RightGroupActive extends RightGroupActive {
   TResult map<TResult extends Object?>({
     required TResult Function(LeftGroupActive value) leftGroupActive,
     required TResult Function(RightGroupActive value) rightGroupActive,
-    required TResult Function(HistorySetpActive value) historySetpActive,
   }) {
     return rightGroupActive(this);
   }
@@ -429,7 +396,6 @@ class _$RightGroupActive extends RightGroupActive {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(LeftGroupActive value)? leftGroupActive,
     TResult Function(RightGroupActive value)? rightGroupActive,
-    TResult Function(HistorySetpActive value)? historySetpActive,
   }) {
     return rightGroupActive?.call(this);
   }
@@ -439,7 +405,6 @@ class _$RightGroupActive extends RightGroupActive {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(LeftGroupActive value)? leftGroupActive,
     TResult Function(RightGroupActive value)? rightGroupActive,
-    TResult Function(HistorySetpActive value)? historySetpActive,
     required TResult orElse(),
   }) {
     if (rightGroupActive != null) {
@@ -450,179 +415,16 @@ class _$RightGroupActive extends RightGroupActive {
 }
 
 abstract class RightGroupActive extends TwelveBallsState {
-  const factory RightGroupActive(
-      WeightingStep quiz, List<WeightingStep> history) = _$RightGroupActive;
+  const factory RightGroupActive(List<WeightingStep> history, int index) =
+      _$RightGroupActive;
   const RightGroupActive._() : super._();
 
-  WeightingStep get quiz;
   @override
   List<WeightingStep> get history;
+  @override
+  int get index;
   @override
   @JsonKey(ignore: true)
   $RightGroupActiveCopyWith<RightGroupActive> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $HistorySetpActiveCopyWith<$Res>
-    implements $TwelveBallsStateCopyWith<$Res> {
-  factory $HistorySetpActiveCopyWith(
-          HistorySetpActive value, $Res Function(HistorySetpActive) then) =
-      _$HistorySetpActiveCopyWithImpl<$Res>;
-  @override
-  $Res call({int index, List<WeightingStep> history});
-}
-
-/// @nodoc
-class _$HistorySetpActiveCopyWithImpl<$Res>
-    extends _$TwelveBallsStateCopyWithImpl<$Res>
-    implements $HistorySetpActiveCopyWith<$Res> {
-  _$HistorySetpActiveCopyWithImpl(
-      HistorySetpActive _value, $Res Function(HistorySetpActive) _then)
-      : super(_value, (v) => _then(v as HistorySetpActive));
-
-  @override
-  HistorySetpActive get _value => super._value as HistorySetpActive;
-
-  @override
-  $Res call({
-    Object? index = freezed,
-    Object? history = freezed,
-  }) {
-    return _then(HistorySetpActive(
-      index == freezed
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
-      history == freezed
-          ? _value.history
-          : history // ignore: cast_nullable_to_non_nullable
-              as List<WeightingStep>,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$HistorySetpActive extends HistorySetpActive {
-  const _$HistorySetpActive(this.index, this.history) : super._();
-
-  @override
-  final int index;
-  @override
-  final List<WeightingStep> history;
-
-  @override
-  String toString() {
-    return 'TwelveBallsState.historySetpActive(index: $index, history: $history)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is HistorySetpActive &&
-            const DeepCollectionEquality().equals(other.index, index) &&
-            const DeepCollectionEquality().equals(other.history, history));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(index),
-      const DeepCollectionEquality().hash(history));
-
-  @JsonKey(ignore: true)
-  @override
-  $HistorySetpActiveCopyWith<HistorySetpActive> get copyWith =>
-      _$HistorySetpActiveCopyWithImpl<HistorySetpActive>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(WeightingStep quiz, List<WeightingStep> history)
-        leftGroupActive,
-    required TResult Function(WeightingStep quiz, List<WeightingStep> history)
-        rightGroupActive,
-    required TResult Function(int index, List<WeightingStep> history)
-        historySetpActive,
-  }) {
-    return historySetpActive(index, history);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        leftGroupActive,
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        rightGroupActive,
-    TResult Function(int index, List<WeightingStep> history)? historySetpActive,
-  }) {
-    return historySetpActive?.call(index, history);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        leftGroupActive,
-    TResult Function(WeightingStep quiz, List<WeightingStep> history)?
-        rightGroupActive,
-    TResult Function(int index, List<WeightingStep> history)? historySetpActive,
-    required TResult orElse(),
-  }) {
-    if (historySetpActive != null) {
-      return historySetpActive(index, history);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(LeftGroupActive value) leftGroupActive,
-    required TResult Function(RightGroupActive value) rightGroupActive,
-    required TResult Function(HistorySetpActive value) historySetpActive,
-  }) {
-    return historySetpActive(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(LeftGroupActive value)? leftGroupActive,
-    TResult Function(RightGroupActive value)? rightGroupActive,
-    TResult Function(HistorySetpActive value)? historySetpActive,
-  }) {
-    return historySetpActive?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(LeftGroupActive value)? leftGroupActive,
-    TResult Function(RightGroupActive value)? rightGroupActive,
-    TResult Function(HistorySetpActive value)? historySetpActive,
-    required TResult orElse(),
-  }) {
-    if (historySetpActive != null) {
-      return historySetpActive(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class HistorySetpActive extends TwelveBallsState {
-  const factory HistorySetpActive(int index, List<WeightingStep> history) =
-      _$HistorySetpActive;
-  const HistorySetpActive._() : super._();
-
-  int get index;
-  @override
-  List<WeightingStep> get history;
-  @override
-  @JsonKey(ignore: true)
-  $HistorySetpActiveCopyWith<HistorySetpActive> get copyWith =>
       throw _privateConstructorUsedError;
 }

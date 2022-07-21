@@ -35,30 +35,25 @@ enum WeightingButtonType {
 @freezed
 class TwelveBallsState with _$TwelveBallsState {
   const factory TwelveBallsState.leftGroupActive(
-      WeightingStep quiz, List<WeightingStep> history) = LeftGroupActive;
+      List<WeightingStep> history, int index) = LeftGroupActive;
   const factory TwelveBallsState.rightGroupActive(
-      WeightingStep quiz, List<WeightingStep> history) = RightGroupActive;
-  const factory TwelveBallsState.historySetpActive(
-      int index, List<WeightingStep> history) = HistorySetpActive;
+      List<WeightingStep> history, int index) = RightGroupActive;
 
   const TwelveBallsState._();
 
-  WeightingStep get quiz => map(
-        leftGroupActive: (s) => s.quiz,
-        rightGroupActive: (s) => s.quiz,
-        historySetpActive: (s) => s.history[s.index],
+  WeightingStep get quiz => when(
+        leftGroupActive: (history, index) => history[index],
+        rightGroupActive: (history, index) => history[index],
       );
 
   bool get leftGroupSelected => map(
         leftGroupActive: (s) => true,
         rightGroupActive: (s) => false,
-        historySetpActive: (s) => false,
       );
 
   bool get rightGroupSelected => map(
         leftGroupActive: (s) => false,
         rightGroupActive: (s) => true,
-        historySetpActive: (s) => false,
       );
 
   WeightingButtonType _getWeightButtonType(WeightingStep quiz) {
@@ -72,146 +67,135 @@ class TwelveBallsState with _$TwelveBallsState {
     }
   }
 
-  WeightingButtonType get weightButtonType => map(
-        leftGroupActive: (s) => _getWeightButtonType(s.quiz),
-        rightGroupActive: (s) => _getWeightButtonType(s.quiz),
-        historySetpActive: (s) => WeightingButtonType.apply,
-      );
+  WeightingButtonType get weightButtonType => _getWeightButtonType(quiz);
 
   List<WeightingStep> get history => map(
         leftGroupActive: (s) => s.history,
         rightGroupActive: (s) => s.history,
-        historySetpActive: (s) => s.history,
       );
 
   int get historyActiveIndex => map(
-        leftGroupActive: (s) => s.history.length,
-        rightGroupActive: (s) => s.history.length,
-        historySetpActive: (s) => s.index,
+        leftGroupActive: (s) => s.index,
+        rightGroupActive: (s) => s.index,
       );
 }
 
 class TwelveBallsQuizNotifier extends StateNotifier<TwelveBallsState> {
   TwelveBallsQuizNotifier()
-      : super(TwelveBallsState.leftGroupActive(WeightingStep(12), []));
+      : super(TwelveBallsState.leftGroupActive([WeightingStep(12)], 0));
 
   void clickCandidateBall(Ball ball) {
-    state.when(
-      leftGroupActive: (quiz, history) {
-        quiz.leftGroupState = BallState.unknown;
+    final quiz = state.quiz;
+
+    state.map(
+      leftGroupActive: (s) {
         if (quiz.leftGroup.indexOf(ball.index) < 0) {
+          quiz.leftGroupState = BallState.unknown;
           quiz.leftGroup.add(ball.index);
           quiz.leftGroup.sort((a, b) => b.compareTo(a));
+
+          _updateQuiz(quiz);
         }
-        state = TwelveBallsState.leftGroupActive(quiz, history);
       },
-      rightGroupActive: (quiz, history) {
-        quiz.leftGroupState = BallState.unknown;
+      rightGroupActive: (s) {
         if (quiz.rightGroup.indexOf(ball.index) < 0) {
+          quiz.leftGroupState = BallState.unknown;
           quiz.rightGroup.add(ball.index);
           quiz.rightGroup.sort((a, b) => b.compareTo(a));
+
+          _updateQuiz(quiz);
         }
-        state = TwelveBallsState.rightGroupActive(quiz, history);
-      },
-      historySetpActive: (index, history) {
-        state = TwelveBallsState.historySetpActive(index, history);
       },
     );
   }
 
   void clickLeftGroup() {
-    state.when(
-      leftGroupActive: (quiz, history) {},
-      rightGroupActive: (quiz, history) {
-        state = TwelveBallsState.leftGroupActive(quiz, history);
-      },
-      historySetpActive: (index, history) {
-        state = TwelveBallsState.leftGroupActive(history[index], history);
+    state.mapOrNull(
+      rightGroupActive: (s) {
+        state = TwelveBallsState.leftGroupActive(s.history, s.index);
       },
     );
   }
 
   void clickRightGroup() {
-    state.when(
-      leftGroupActive: (quiz, history) {
-        state = TwelveBallsState.rightGroupActive(quiz, history);
+    state.mapOrNull(
+      leftGroupActive: (s) {
+        state = TwelveBallsState.rightGroupActive(s.history, s.index);
       },
-      rightGroupActive: (quiz, history) {},
-      historySetpActive: (index, history) {
-        state = TwelveBallsState.rightGroupActive(history[index], history);
-      },
+    );
+  }
+
+  void _updateQuiz(WeightingStep quiz) {
+    final history = state.history;
+    final index = state.historyActiveIndex;
+    history[index] = quiz;
+    state = state.map(
+      leftGroupActive: (s) => TwelveBallsState.leftGroupActive(history, index),
+      rightGroupActive: (s) =>
+          TwelveBallsState.rightGroupActive(history, index),
     );
   }
 
   void clickLeftGroupBall(Ball ball) {
-    state.when(
-      leftGroupActive: (quiz, history) {
-        quiz.removeFromLeftGroup(ball.index);
-        state = TwelveBallsState.leftGroupActive(quiz, history);
-      },
-      rightGroupActive: (quiz, history) {
-        quiz.removeFromLeftGroup(ball.index);
-        state = TwelveBallsState.leftGroupActive(quiz, history);
-      },
-      historySetpActive: (index, history) {},
-    );
+    final quiz = state.quiz;
+    quiz.removeFromLeftGroup(ball.index);
+    _updateQuiz(quiz);
   }
 
   void clickRightGroupBall(Ball ball) {
-    state.when(
-      leftGroupActive: (quiz, history) {
-        quiz.removeFromRightGroup(ball.index);
-        state = TwelveBallsState.rightGroupActive(quiz, history);
+    state = state.when(
+      leftGroupActive: (history, index) {
+        history[index].removeFromRightGroup(ball.index);
+        return TwelveBallsState.rightGroupActive(history, index);
       },
-      rightGroupActive: (quiz, history) {
-        quiz.removeFromRightGroup(ball.index);
-        state = TwelveBallsState.rightGroupActive(quiz, history);
+      rightGroupActive: (history, index) {
+        history[index].removeFromRightGroup(ball.index);
+        return TwelveBallsState.rightGroupActive(history, index);
       },
-      historySetpActive: (index, history) {},
     );
   }
 
   void doWeighting() {
-    _weight(WeightingStep quiz, List<WeightingStep> history) {
-      if (quiz.hasResult) {
-        history.add(quiz);
-        quiz.doWeighting();
+    final quiz = state.quiz;
+    var history = state.history;
+    var index = state.historyActiveIndex;
 
-        state = state.map(
-          leftGroupActive: (s) =>
-              TwelveBallsState.leftGroupActive(quiz, history),
-          rightGroupActive: (s) =>
-              TwelveBallsState.rightGroupActive(quiz, history),
-          historySetpActive: (s) =>
-              TwelveBallsState.historySetpActive(s.index, history),
-        );
-      } else if (quiz.isReadToWeight) {
-        final _weightResults = quiz.getWorstWeightingResult(
-          quiz.leftGroup,
-          quiz.rightGroup,
-        );
+    if (quiz.hasResult) {
+      if (index < history.length - 1) {
+        history.removeRange(index + 1, history.length);
+      }
+      final newStep = WeightingStep.from(quiz);
+      history.add(newStep);
+      index += 1;
+      newStep.doWeighting();
 
-        if (_weightResults.length > 0) {
-          quiz.leftGroupState = _weightResults.first;
-          state = TwelveBallsState.leftGroupActive(quiz, history);
-        }
+      state = state.map(
+        leftGroupActive: (s) =>
+            TwelveBallsState.leftGroupActive(history, index),
+        rightGroupActive: (s) =>
+            TwelveBallsState.leftGroupActive(history, index),
+      );
+    } else if (quiz.isReadToWeight) {
+      final _weightResults = quiz.getWorstWeightingResult(
+        quiz.leftGroup,
+        quiz.rightGroup,
+      );
+
+      // todo: save unsolved branches
+      if (_weightResults.length > 0) {
+        quiz.leftGroupState = _weightResults.first;
+        _updateQuiz(quiz);
       }
     }
-
-    state.when(
-      leftGroupActive: _weight,
-      rightGroupActive: _weight,
-      historySetpActive: (index, history) {
-        final quiz = history[index];
-        quiz.doWeighting();
-        history.removeRange(index + 1, history.length);
-        state = TwelveBallsState.leftGroupActive(quiz, history);
-      },
-    );
   }
 
   void onHistoryTap(int index) {
-    // state = TwelveBallsState.historySetpActive(index, state.history);
+    print('onHistoryTap: $index');
+    state = state.map(
+        leftGroupActive: (s) =>
+            TwelveBallsState.leftGroupActive(state.history, index),
+        rightGroupActive: (s) =>
+            TwelveBallsState.rightGroupActive(state.history, index));
   }
 }
 
