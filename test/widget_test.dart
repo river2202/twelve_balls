@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:twelve_balls/View/BallView.dart';
@@ -153,8 +154,15 @@ void main() {
   Finder _rightBall([int? index]) =>
       _findBallView(TwelveBallsQuizPage.rightBallGroupViewKey, index);
 
+  Widget getTwelveBallsQuizApp() => ProviderScope(
+        child: TwelveBallsQuizApp(),
+        overrides: [
+          testNewFeatureToggleProvider.overrideWithValue(false),
+        ],
+      );
+
   testWidgets('Select ball to weight', (WidgetTester tester) async {
-    await tester.pumpWidget(TwelveBallsQuizApp());
+    await tester.pumpWidget(getTwelveBallsQuizApp());
     expect(find.byKey(TwelveBallsQuizPage.candidateBallGroupViewKey),
         findsOneWidget);
     expect(
@@ -192,7 +200,7 @@ void main() {
 
   testWidgets('Test selected ball backward ordered',
       (WidgetTester tester) async {
-    await tester.pumpWidget(TwelveBallsQuizApp());
+    await tester.pumpWidget(getTwelveBallsQuizApp());
     await tester.tap(_candidateBall(0));
     await tester.tap(_candidateBall(1));
     await tester.pump();
@@ -238,7 +246,7 @@ void main() {
   });
 
   testWidgets('Test switch loading group', (WidgetTester tester) async {
-    await tester.pumpWidget(TwelveBallsQuizApp());
+    await tester.pumpWidget(getTwelveBallsQuizApp());
     await tester.tap(_candidateBall(0));
     await tester.tap(_candidateBall(1));
 
@@ -287,7 +295,7 @@ void main() {
   });
 
   testWidgets('Test apply weighting', (WidgetTester tester) async {
-    var robot = TwelveBallsRobot(tester, TwelveBallsQuizApp());
+    var robot = TwelveBallsRobot(tester, getTwelveBallsQuizApp());
     await robot.startApp();
     robot.iSeeCandidateBalls("????????????");
     robot.iSeeHistorySteps(1);
@@ -306,9 +314,7 @@ void main() {
       ..iSeeRightBalls("??");
 
     await robot.tapWeight();
-    await robot.doIt();
-
-    await robot.waitMs(600);
+    await robot.done();
 
     await robot.tapApply();
     await robot.doIt();
@@ -414,7 +420,7 @@ void main() {
       ..overrideDevicesForAllScenarios(devices: [Device.phone]);
     final goldenComparer = GoldenComparer();
 
-    var robot = TwelveBallsRobot(tester, TwelveBallsQuizApp());
+    var robot = TwelveBallsRobot(tester, getTwelveBallsQuizApp());
     builder.addScenario(
       widget: robot.testTarget,
     );

@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twelve_balls/View/TwelveBallsQuiz.dart';
 
-import 'Game/World.dart';
 import 'View/GameStartScreen.dart';
 import 'View/TwelveBallsQuizPageNew.dart';
 
 void main() {
-  runApp(Provider(
-    create: (_) => new World(),
-    lazy: false,
-    child: TwelveBallsQuizApp(),
-  ));
+  runApp(ProviderScope(child: TwelveBallsQuizApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,25 +17,27 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: TwelveBallsQuizPage(title: '12 Balls Challenge'),
       home: GameStartScreen(),
     );
   }
 }
 
-class TwelveBallsQuizApp extends StatelessWidget {
-  // This widget is the root of your application.
+class TwelveBallsQuizApp extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    return riverpod.ProviderScope(
-      child: MaterialApp(
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        debugShowCheckedModeBanner: false,
-        home: TwelveBallsQuizPageNew(),
-        // home: TwelveBallsQuizPage(title: '12 Balls Challenge'),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
+      home: ref.watch(testNewFeatureToggleProvider)
+          ? TwelveBallsQuizPageNew()
+          : TwelveBallsQuizPage(title: '12 Balls Challenge'),
     );
   }
 }
+
+/// todo: remove this feature toggle after refactoring
+final testNewFeatureToggleProvider = Provider<bool>((ref) {
+  return true;
+});
