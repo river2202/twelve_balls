@@ -21,10 +21,9 @@ part 'TwelveBallsQuizStateProvider.freezed.dart';
 /// 11. when only one ball is left within 3 steps, showing You Win!
 /// 12. tap history number to show the history step
 ///
-/// * phase 2:
+/// todo: * phase 2:
 /// 1. show and manage inline message.
 /// 2. list all branches to be solved
-/// 2.
 ///
 enum WeightingButtonType {
   weight,

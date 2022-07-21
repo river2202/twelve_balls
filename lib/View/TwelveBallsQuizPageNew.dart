@@ -6,6 +6,8 @@ import 'BallGroupView.dart';
 import 'BallView.dart';
 import 'TwelveBallsQuizStateProvider.dart';
 
+/// todo: - show success/failure message
+///
 typedef HistoryStepTapped = void Function(int);
 
 class TwelveBallsQuizPageNew extends ConsumerWidget {
