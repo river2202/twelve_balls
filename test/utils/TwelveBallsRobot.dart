@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:twelve_balls/View/BallView.dart';
-import 'package:twelve_balls/View/TwelveBallsQuiz.dart';
+import 'package:twelve_balls/View/TwelveBallsQuizPageOld.dart';
 
 import 'threshold_file_comparator.dart';
 
@@ -75,7 +75,7 @@ class Robot {
     await _goldenComparer.screenMatchesThreshold(
       tester,
       'golden_files/$name',
-      threshold: 0.05,
+      threshold: 0.005,
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:twelve_balls/View/TwelveBallsQuiz.dart';
+import 'package:twelve_balls/View/TwelveBallsQuizPageOld.dart';
 
 import 'View/GameStartScreen.dart';
 import 'View/TwelveBallsQuizPageNew.dart';

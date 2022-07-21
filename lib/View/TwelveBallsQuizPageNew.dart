@@ -81,10 +81,9 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    color: _getWeightButtonColor(),
-                    onPressed: () => vm.doWeighting(),
-                    child: Text(state.getWeightButtonText),
+                  child: _buildRaisedButton(
+                    vm.doWeighting,
+                    state.weightButtonType,
                   ),
                 ),
                 getHistoryRow(state.history.length + 1,
@@ -102,12 +101,26 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
     );
   }
 
-  Color _getWeightButtonColor() {
-    // if (vm.weightResult() == BallState.unknown) {
-    //   return vm.isReadyToWeight() ? Colors.blue : Colors.grey;
-    // } else {
-    return Colors.red;
-    // }
+  RaisedButton _buildRaisedButton(
+    VoidCallback callback,
+    WeightingButtonType buttonType,
+  ) {
+    final buttonTexts = {
+      WeightingButtonType.loading: "Loading",
+      WeightingButtonType.weight: "Weight",
+      WeightingButtonType.apply: "Apply",
+    };
+
+    final buttonColors = {
+      WeightingButtonType.loading: Colors.grey,
+      WeightingButtonType.weight: Colors.blue,
+      WeightingButtonType.apply: Colors.red,
+    };
+    return RaisedButton(
+      color: buttonColors[buttonType],
+      child: Text(buttonTexts[buttonType] ?? ''),
+      onPressed: callback,
+    );
   }
 
   Widget getHistoryRow(int length, int activeIndex, HistoryStepTapped onTap) {
@@ -146,7 +159,7 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
       ),
     );
     return GestureDetector(
-      onTap: () => onTap(index),
+      onTap: () => active ? null : onTap(index),
       child: circle,
     );
   }

@@ -4,7 +4,7 @@ import 'package:twelve_balls/Model/WeightingStep.dart';
 import 'package:twelve_balls/View/BallGroupView.dart';
 import 'package:twelve_balls/View/BallView.dart';
 
-import 'TwelveBallsQuizVM.dart';
+import 'TwelveBallsQuizPageVM.dart';
 
 // Plan:
 // - Done: move data and logic to TwelveBallsQuizVM - fast done, just for demo

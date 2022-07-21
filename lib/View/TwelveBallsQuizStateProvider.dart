@@ -6,19 +6,31 @@ import 'package:twelve_balls/Model/WeightingStep.dart';
 part 'TwelveBallsQuizStateProvider.freezed.dart';
 
 ///
-/// Todo:
-// Think about data
-// 12 balls (list of balls)
-// Left scale (list of balls)
-// Right scale (list of balls)
-// current active scale (left or right)
-// History node (steps)
-// current step
-//
-// Think about state - more declarative
-// Left active (WeightingStep, history)
-// Right active (WeightingStep, history)
-// History active (history, active index)
+/// === 12 balls quiz game ===
+/// * phase 1: MVP
+/// 1. list 12 candidate balls and their states
+/// 2. show left and right scales with balls on scale
+/// 3. one side is active, the other is inactive, active one showing yellow
+/// 4. player can click balls to select them
+/// 5. player can click balls on scale to remove them
+/// 6. showing grey loading when no balls on scale or balls number is not same
+/// 7. showing blue weight when balls on both side are the same and not 0
+/// 8. player can click weight to see the result
+/// 9. showing apply button when result is presented
+/// 10. player can click apple to move to next step
+/// 11. when only one ball is left within 3 steps, showing You Win!
+/// 12. tap history number to show the history step
+///
+/// * phase 2:
+/// 1. show and manage inline message.
+/// 2. list all branches to be solved
+/// 2.
+///
+enum WeightingButtonType {
+  weight,
+  loading,
+  apply,
+}
 
 @freezed
 class TwelveBallsState with _$TwelveBallsState {
@@ -49,17 +61,21 @@ class TwelveBallsState with _$TwelveBallsState {
         historySetpActive: (s) => false,
       );
 
-  String _getWeightButtonText(WeightingStep quiz) {
-    if (quiz.isReadToWeight)
-      return "Weight";
-    else
-      return "Loading";
+  WeightingButtonType _getWeightButtonType(WeightingStep quiz) {
+    if (quiz.hasResult) {
+      return WeightingButtonType.apply;
+    } else {
+      if (quiz.isReadToWeight)
+        return WeightingButtonType.weight;
+      else
+        return WeightingButtonType.loading;
+    }
   }
 
-  String get getWeightButtonText => map(
-        leftGroupActive: (s) => _getWeightButtonText(s.quiz),
-        rightGroupActive: (s) => _getWeightButtonText(s.quiz),
-        historySetpActive: (s) => "Apply",
+  WeightingButtonType get weightButtonType => map(
+        leftGroupActive: (s) => _getWeightButtonType(s.quiz),
+        rightGroupActive: (s) => _getWeightButtonType(s.quiz),
+        historySetpActive: (s) => WeightingButtonType.apply,
       );
 
   List<WeightingStep> get history => map(
@@ -155,8 +171,48 @@ class TwelveBallsQuizNotifier extends StateNotifier<TwelveBallsState> {
     );
   }
 
-  void doWeighting() {}
-  void onHistoryTap(int index) {}
+  void doWeighting() {
+    _weight(WeightingStep quiz, List<WeightingStep> history) {
+      if (quiz.hasResult) {
+        history.add(quiz);
+        quiz.doWeighting();
+
+        state = state.map(
+          leftGroupActive: (s) =>
+              TwelveBallsState.leftGroupActive(quiz, history),
+          rightGroupActive: (s) =>
+              TwelveBallsState.rightGroupActive(quiz, history),
+          historySetpActive: (s) =>
+              TwelveBallsState.historySetpActive(s.index, history),
+        );
+      } else if (quiz.isReadToWeight) {
+        final _weightResults = quiz.getWorstWeightingResult(
+          quiz.leftGroup,
+          quiz.rightGroup,
+        );
+
+        if (_weightResults.length > 0) {
+          quiz.leftGroupState = _weightResults.first;
+          state = TwelveBallsState.leftGroupActive(quiz, history);
+        }
+      }
+    }
+
+    state.when(
+      leftGroupActive: _weight,
+      rightGroupActive: _weight,
+      historySetpActive: (index, history) {
+        final quiz = history[index];
+        quiz.doWeighting();
+        history.removeRange(index + 1, history.length);
+        state = TwelveBallsState.leftGroupActive(quiz, history);
+      },
+    );
+  }
+
+  void onHistoryTap(int index) {
+    // state = TwelveBallsState.historySetpActive(index, state.history);
+  }
 }
 
 final twelveBallsQuizStateProvider = StateNotifierProvider.autoDispose<

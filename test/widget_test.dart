@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:twelve_balls/View/BallView.dart';
-import 'package:twelve_balls/View/TwelveBallsQuiz.dart';
+import 'package:twelve_balls/View/TwelveBallsQuizPageOld.dart';
 import 'package:twelve_balls/main.dart';
 
 import 'utils/TwelveBallsRobot.dart';
@@ -177,7 +177,10 @@ void main() {
   });
 
   testGoldens('Test apply weighting', (WidgetTester tester) async {
-    var robot = TwelveBallsRobot(tester, getTwelveBallsQuizApp(newPage: false));
+    final testNew = !autoUpdateGoldenFiles;
+
+    var robot =
+        TwelveBallsRobot(tester, getTwelveBallsQuizApp(newPage: testNew));
     await robot.startApp();
     robot.iSeeCandidateBalls("????????????");
     robot.iSeeHistorySteps(1);
@@ -201,7 +204,8 @@ void main() {
     await robot.goldenTest("can see apply button");
 
     await robot.tapApply();
-    await robot.doIt();
+    await robot.done();
+    await robot.goldenTest("can see result applied");
     robot
       ..iSeeCandidateBalls("----????????")
       ..iSeeHistorySteps(2)
@@ -249,7 +253,7 @@ void main() {
     await step2();
 
     await robot.tapHistory(1);
-    await robot.doIt();
+    await robot.done();
 
     robot
       ..iSeeCandidateBalls("----????????")
@@ -264,7 +268,7 @@ void main() {
       ..iSeeHistoryStepText(2, "1");
 
     await robot.tapHistory(0);
-    await robot.doIt();
+    await robot.done();
 
     robot
       ..iSeeCandidateBalls("????????????")
