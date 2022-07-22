@@ -75,7 +75,7 @@ class Robot {
     await _goldenComparer.screenMatchesThreshold(
       tester,
       'goldens/$name',
-      threshold: 0.005,
+      threshold: 0.8,
     );
   }
 }
