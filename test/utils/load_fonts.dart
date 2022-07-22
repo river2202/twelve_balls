@@ -23,5 +23,5 @@ Future<void> loadFonts() async {
   await loadCustomFont('TradeGothicLTStd', 'fonts/TradeGothicLTStd.otf');
   await loadCustomFont(
       'TradeGothicLTStd-Bold', 'fonts/TradeGothicLTStd-Bold.otf');
-  await loadCustomFont('DS-DIGI', 'fonts/DS-DIGI.ttf');
+  await loadCustomFont('DS-DIGI', 'fonts/DS-DIGI.TTF');
 }
