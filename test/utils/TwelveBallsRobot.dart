@@ -74,7 +74,7 @@ class Robot {
   goldenTest(String name) async {
     await _goldenComparer.screenMatchesThreshold(
       tester,
-      'golden_files/$name',
+      'goldens/$name',
       threshold: 0.005,
     );
   }
@@ -119,7 +119,8 @@ class TwelveBallsRobot extends Robot {
     for (int i = 0; i < symbols.runes.length; i++) {
       var symbol = String.fromCharCode(symbols.runes.elementAt(i));
 
-      expect(find.descendant(of: balls.at(i), matching: find.text(symbol)),
+      expect(
+          find.descendant(of: balls.at(i), matching: find.byKey(Key(symbol))),
           findsOneWidget);
     }
   }

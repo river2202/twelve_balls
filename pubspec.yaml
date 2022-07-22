@@ -31,3 +31,13 @@ flutter:
     - button-animation.flr
     - Scale.flr
 
+  fonts:
+    - family: DS-DIGI
+      fonts:
+        - asset: fonts/DS-DIGI.TTF
+    - family: TradeGothicLTStd
+      fonts:
+        - asset: fonts/TradeGothicLTStd.otf
+        - asset: fonts/TradeGothicLTStd-Bold.otf
+          weight: 700
+

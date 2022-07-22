@@ -237,10 +237,7 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
       ),
     );
 
-    return MaterialApp(
-      title: '12 Balls',
-      home: _scaffold,
-    );
+    return _scaffold;
   }
 
   Widget getHistoryRow({WeightingStep? activeStep}) {

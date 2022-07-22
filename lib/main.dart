@@ -28,6 +28,7 @@ class TwelveBallsQuizApp extends ConsumerWidget {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'TradeGothicLTStd-Bold',
       ),
       debugShowCheckedModeBanner: false,
       home: ref.watch(testNewFeatureToggleProvider)

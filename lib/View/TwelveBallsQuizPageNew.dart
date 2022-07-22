@@ -26,7 +26,6 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
     final vm = ref.watch(twelveBallsQuizStateProvider.notifier);
     final state = ref.watch(twelveBallsQuizStateProvider);
     final quiz = state.quiz;
-    print("TwelveBallsQuizPageNew: build: ${quiz.description()}");
 
     var candidateBallViews = quiz.balls
         .map((ball) => BallView(ball, (ball, _) => vm.clickCandidateBall(ball),
@@ -99,10 +98,7 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
       ),
     );
 
-    return MaterialApp(
-      title: '12 Balls',
-      home: _scaffold,
-    );
+    return _scaffold;
   }
 
   RaisedButton _buildRaisedButton(

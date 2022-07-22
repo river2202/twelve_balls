@@ -26,18 +26,23 @@ class BallView extends StatelessWidget {
     );
   }
 
+  Icon _ballIcon(BallState state) {
+    final icons = {
+      BallState.unknown: Icons.question_mark,
+      BallState.good: Icons.check,
+      BallState.possiblyHeavier: Icons.arrow_downward,
+      BallState.possiblyLighter: Icons.arrow_upward,
+    };
+    return Icon(icons[state]);
+  }
+
   _getChildren() {
     var c = <Widget>[
       CircleAvatar(
+        key: Key(_ball.symbol()),
         backgroundColor: Colors.blueAccent,
         radius: _radius,
-        child: Text(
-          "${_ball.symbol()}",
-          style: TextStyle(
-              fontSize: _radius,
-              fontWeight: FontWeight.bold,
-              color: Colors.white),
-        ),
+        child: _ballIcon(_ball.state),
       ),
     ];
 
