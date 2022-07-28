@@ -89,7 +89,7 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
                     state.weightButtonType,
                   ),
                 ),
-                getHistoryRow(state.history.length, state.historyActiveIndex,
+                _buildHistoryRow(state.history.length, state.historyActiveIndex,
                     vm.onHistoryTap),
               ],
             ),
@@ -123,7 +123,8 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
     );
   }
 
-  Widget getHistoryRow(int length, int activeIndex, HistoryStepTapped onTap) {
+  Widget _buildHistoryRow(
+      int length, int activeIndex, HistoryStepTapped onTap) {
     return Expanded(
         child: Padding(
       padding: const EdgeInsets.all(8.0),

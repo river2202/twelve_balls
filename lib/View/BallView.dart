@@ -42,7 +42,14 @@ class BallView extends StatelessWidget {
         key: Key(_ball.symbol()),
         backgroundColor: Colors.blueAccent,
         radius: _radius,
-        child: _ballIcon(_ball.state),
+        // child: _ballIcon(_ball.state),
+        child: Text(
+          "${getBallLetterByIndex()}",
+          style: TextStyle(
+              fontSize: _radius,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
+        ),
       ),
     ];
 
@@ -53,7 +60,7 @@ class BallView extends StatelessWidget {
             backgroundColor: Colors.grey,
             radius: _radius / 3,
             child: Text(
-              "${_ball.index + 1}",
+              "${getBallLetterByIndex()}",
               style: TextStyle(
                   fontSize: _radius / 2,
                   fontWeight: FontWeight.bold,
@@ -63,6 +70,11 @@ class BallView extends StatelessWidget {
     }
 
     return c;
+  }
+
+  String getBallLetterByIndex() {
+    final letters = "F AM NOT LICKED".split(" ").join("");
+    return letters[_ball.index] + _ball.symbol();
   }
 
   _ballView() {
