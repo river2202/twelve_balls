@@ -49,10 +49,10 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
   _TwelveBallsQuizPageState() {}
 
   _showSnackBarMessage(String message, BuildContext context) {
-    Scaffold.of(context).hideCurrentSnackBar();
-    Scaffold.of(context).showSnackBar(new SnackBar(
-      content: new Text(message),
-    ));
+    // Scaffold.of(context).hideCurrentSnackBar();
+    // Scaffold.of(context).showSnackBar(new SnackBar(
+    //   content: new Text(message),
+    // ));
   }
 
   _checkResult() {
@@ -64,7 +64,7 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
                 content: new Text("Use puzzle pannel to solve other branches."),
                 actions: <Widget>[
                   // usually buttons at the bottom of the dialog
-                  new FlatButton(
+                  new TextButton(
                     child: new Text("Close"),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -221,14 +221,14 @@ class _TwelveBallsQuizPageState extends State<TwelveBallsQuizPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    color: _getWeightButtonColor(),
-                    onPressed: () => _doWeighting(context),
-                    child: Text(vm.getWeightButtonText()),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: RaisedButton(
+                //     color: _getWeightButtonColor(),
+                //     onPressed: () => _doWeighting(context),
+                //     child: Text(vm.getWeightButtonText()),
+                //   ),
+                // ),
                 getHistoryRow(activeStep: vm.activeQuiz),
               ],
             ),

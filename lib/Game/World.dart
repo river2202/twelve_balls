@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 class World {
   World();
 
@@ -56,3 +58,7 @@ class World {
         center: historyBarCenter, width: width, height: screenSize.height / 10);
   }
 }
+
+final worldProvider = Provider<World>((ref) {
+  return World();
+});

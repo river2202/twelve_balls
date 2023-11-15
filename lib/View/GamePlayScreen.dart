@@ -1,27 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twelve_balls/Game/World.dart';
 import 'package:twelve_balls/Model/Quiz.dart';
 
 import 'BallGroupView.dart';
 import 'BallView.dart';
 
-class GamePlayScreen extends StatefulWidget {
-  GamePlayScreen({Key? key, this.title}) : super(key: key);
-
-  final String? title;
+class GamePlayScreen extends ConsumerWidget {
+  GamePlayScreen({Key? key}) : super(key: key);
 
   @override
-  _GamePlayScreenState createState() => _GamePlayScreenState();
-}
-
-class _GamePlayScreenState extends State<GamePlayScreen> {
-  late String name = "12 Balls";
-
-  @override
-  Widget build(BuildContext context) {
-    final world = Provider.of<World>(context);
-    world.init(MediaQuery.of(context).size);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final world = ref.read(worldProvider);
 
     var _scaffold = Scaffold(
       body: Builder(
@@ -49,7 +39,6 @@ class _GamePlayScreenState extends State<GamePlayScreen> {
     return _scaffold;
   }
 
-  bool isOpen = false;
   Widget buildScale(Rect rect, Color color) {
     return Positioned.fromRect(
       rect: rect,

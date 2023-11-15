@@ -101,7 +101,7 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
     return _scaffold;
   }
 
-  RaisedButton _buildRaisedButton(
+  TextButton _buildRaisedButton(
     VoidCallback callback,
     WeightingButtonType buttonType,
   ) {
@@ -116,8 +116,8 @@ class TwelveBallsQuizPageNew extends ConsumerWidget {
       WeightingButtonType.weight: Colors.blue,
       WeightingButtonType.apply: Colors.red,
     };
-    return RaisedButton(
-      color: buttonColors[buttonType],
+    return TextButton(
+      // color: buttonColors[buttonType],
       child: Text(buttonTexts[buttonType] ?? ''),
       onPressed: callback,
     );

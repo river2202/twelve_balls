@@ -1,37 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twelve_balls/Game/World.dart';
 import 'package:twelve_balls/View/GamePlayScreen.dart';
 
 import 'SizeConfig.dart';
 
-class GameStartScreen extends StatefulWidget {
+class GameStartScreen extends ConsumerWidget {
   GameStartScreen({Key? key}) : super(key: key);
 
   @override
-  _GameStartScreenState createState() => _GameStartScreenState();
-}
-
-_startGame(BuildContext context) {
-  Navigator.push(
-    context,
-    new MaterialPageRoute(builder: (context) => new GamePlayScreen()),
-  );
-}
-
-class _GameStartScreenState extends State<GameStartScreen> {
-  late String name;
-
-  _GameStartScreenState() {
-    name = "12 Balls";
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final sizeConfig = SizeConfig(context);
-
-    final game = Provider.of<World>(context);
-    game.init(MediaQuery.of(context).size);
+    ref.read(worldProvider).init(MediaQuery.of(context).size);
 
     var _scaffold = Scaffold(
       body: Stack(
@@ -76,4 +56,11 @@ class _GameStartScreenState extends State<GameStartScreen> {
       radius: radius,
     );
   }
+}
+
+_startGame(BuildContext context) {
+  Navigator.push(
+    context,
+    new MaterialPageRoute(builder: (context) => new GamePlayScreen()),
+  );
 }

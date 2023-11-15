@@ -8,12 +8,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flare_flutter: ^3.0.2
-  provider: ^6.0.3
   dartz: ^0.10.1
   flutter_riverpod:
   freezed:
   freezed_annotation:
+  flutter_native_splash: ^2.3.5
 
 dev_dependencies:
   test: ^1.19.5
@@ -27,9 +26,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  assets:
-    - button-animation.flr
-    - Scale.flr
 
   fonts:
     - family: DS-DIGI

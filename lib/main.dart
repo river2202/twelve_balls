@@ -6,7 +6,7 @@ import 'View/GameStartScreen.dart';
 import 'View/TwelveBallsQuizPageNew.dart';
 
 void main() {
-  runApp(ProviderScope(child: TwelveBallsQuizApp()));
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
